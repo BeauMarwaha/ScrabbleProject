@@ -177,6 +177,16 @@ public class window implements MouseListener{
             southPanel.add(playerOneHand.get(i).getButton());
             playerOneHand.get(i).getButton().addMouseListener(this);
         }
+        for(int i = 0; i < 7; i++){
+            System.out.print(playerOneHand.get(i).getLetter());
+        }
+           
+        System.out.println("");
+        
+        for(int i = 0; i < 7; i++){
+            System.out.print(playerTwoHand.get(i).getLetter());
+        }
+        
     }
 
     @Override
@@ -196,6 +206,7 @@ public class window implements MouseListener{
         
          for(int i = 0; i < 7; i++){
              if(e.getSource() == playerOneHand.get(i).getButton()){
+                 
                  if(turnValue == 1 && exchange && !playerOneHand.get(i).getButton().isEnabled()){
                      playerOneHand.get(i).getButton().setEnabled(true);
                  }
@@ -206,26 +217,25 @@ public class window implements MouseListener{
                  
              }
          }
+         for(int i = 0; i < 7; i++){
+             if(e.getSource() == playerTwoHand.get(i).getButton()){
+                 
+                 if(turnValue == 2 && exchange && !playerTwoHand.get(i).getButton().isEnabled()){
+                     
+                     playerTwoHand.get(i).getButton().setEnabled(true);
+                 }
+                 if(turnValue == 2 && exchange && playerTwoHand.get(i).getButton().isEnabled()){
+                     
+                     playerTwoHand.get(i).getButton().setEnabled(false);
+                     
+                 }
+                 
+             }
+         }
         if(e.getSource() == buttons[4]){
-            for(int i = 6; i >= 0; i--){
-                if(!playerOneHand.get(i).getButton().isEnabled()){
-                    playerOneHand.get(i).getButton().setEnabled(true);
-                    theBag.getBag().push(playerOneHand.get(i));
-                    playerOneHand.remove(i);
-                    
-                }
-            }
-            theBag.shuffleBag();
-            southPanel.removeAll();
-            for(int i = 0; i < 7; i++){
-                playerOneHand.add(theBag.getBag().pop());
-                southPanel.add(playerOneHand.get(i).getButton());
-                playerOneHand.get(i).getButton().addMouseListener(this);
-                southPanel.updateUI();
-            }
-            buttons[2].setEnabled(true);
-            
+            changeTurn();
         }
+        
     }
 
     @Override
@@ -246,5 +256,78 @@ public class window implements MouseListener{
     @Override
     public void mouseExited(MouseEvent e) {
         //throw new UnsupportedOperationException("Not supported yet.");
+    }
+    public void changeTurn(){
+        
+        if(turnValue == 2){
+            southPanel.removeAll();
+            
+            for(int i = 6; i >= 0; i--){
+                if(!playerTwoHand.get(i).getButton().isEnabled()){
+                    playerTwoHand.get(i).getButton().setEnabled(true);
+                    theBag.getBag().push(playerTwoHand.get(i));
+                    playerTwoHand.remove(i);
+                    
+                }
+            }
+            theBag.shuffleBag();
+            southPanel.removeAll();
+            for(int i = 0; i < 7; i++){
+                playerTwoHand.add(theBag.getBag().pop());
+//                southPanel.add(playerTwoHand.get(i).getButton());
+//                playerTwoHand.get(i).getButton().addMouseListener(this);
+                southPanel.updateUI();
+            }
+            buttons[2].setEnabled(true);
+            
+            for(int i = 0; i < 7; i++){
+                southPanel.add(playerOneHand.get(i).getButton());
+                playerOneHand.get(i).getButton().addMouseListener(this);
+                southPanel.updateUI();
+                turnValue = 1;
+                turnNumber.setText("" + turnValue);
+                exchange = false;
+            }
+            
+        }else{
+            southPanel.removeAll();
+            
+            for(int i = 6; i >= 0; i--){
+                if(!playerOneHand.get(i).getButton().isEnabled()){
+                    playerOneHand.get(i).getButton().setEnabled(true);
+                    theBag.getBag().push(playerOneHand.get(i));
+                    playerOneHand.remove(i);
+                    
+                }
+            }
+            theBag.shuffleBag();
+            southPanel.removeAll();
+            for(int i = 0; i < 7; i++){
+                playerOneHand.add(theBag.getBag().pop());
+//                southPanel.add(playerOneHand.get(i).getButton());
+//                playerOneHand.get(i).getButton().addMouseListener(this);
+                southPanel.updateUI();
+            }
+            buttons[2].setEnabled(true);
+            for(int i = 0; i < 7; i++){
+                southPanel.add(playerTwoHand.get(i).getButton());
+                playerTwoHand.get(i).getButton().addMouseListener(this);
+                southPanel.updateUI();
+                turnValue = 2;
+                turnNumber.setText("" + turnValue);
+                exchange = false;
+            }
+            
+        }
+        System.out.println("");
+        for(int i = 0; i < 7; i++){
+            System.out.print(playerOneHand.get(i).getLetter());
+        }
+           
+        System.out.println("");
+        
+        for(int i = 0; i < 7; i++){
+            System.out.print(playerTwoHand.get(i).getLetter());
+        }
     }
 }

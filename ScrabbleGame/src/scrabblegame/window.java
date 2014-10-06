@@ -3,6 +3,7 @@ package scrabblegame;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
 
 /**
@@ -21,7 +22,7 @@ public class window implements MouseListener{
     JPanel buttonsPanel = new JPanel(new GridLayout(4,1));
     JPanel scoresPanel = new JPanel(new GridLayout(6,1));
     JPanel[][] board = new JPanel[15][15];
-    JButton[] buttons = new JButton[4];
+    JButton[] buttons = new JButton[5];
     JButton[] hand = new JButton[0];
     JLabel turn = new JLabel("Whose Turn: ");
     JLabel playerOne = new JLabel("Player One Score: ");
@@ -36,7 +37,11 @@ public class window implements MouseListener{
 
     ImageIcon myPicture = new ImageIcon("src\\pictures\\ScrabbleInfoPanel.png");
     JLabel picLabel = new JLabel(myPicture);
+    boolean exchange = false;
     
+    Bag theBag = new Bag();
+    ArrayList<Tile> playerOneHand = new ArrayList<Tile>();
+    ArrayList<Tile> playerTwoHand = new ArrayList<Tile>();
     public window(){
         window.setVisible(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,11 +61,12 @@ public class window implements MouseListener{
         playerOneNumber.setFont(new Font("Verdana",1,14));
         playerTwoNumber.setFont(new Font("Verdana",1,14));
         
+        
         //SOUTH
         for(int i = 0; i < 9 ; i++){
             //Example 
             
-            southPanel.add(new JButton("Hold"));
+            //southPanel.add(new JButton("Hold"));
             
         }
         
@@ -159,7 +165,7 @@ public class window implements MouseListener{
         }
         buttons[0].setText("Save");
         buttons[1].setText("Load");
-        buttons[2].setText("End Turn");
+        buttons[2].setText("Exchange");
         buttons[3].setText("Exit");
         
         turn.setPreferredSize(new Dimension(75,50));
@@ -174,12 +180,66 @@ public class window implements MouseListener{
         infoPanel.add(picLabel);
         Dimension westSize = new Dimension (150, 725);
         infoPanel.setPreferredSize(westSize);
+        
+        for(int i = 0; i < 7; i++){
+            playerOneHand.add(theBag.getBag().pop());
+            playerTwoHand.add(theBag.getBag().pop());
+        }
+        for(int i = 0; i < 7; i++){
+            southPanel.add(playerOneHand.get(i).getButton());
+            playerOneHand.get(i).getButton().addMouseListener(this);
+        }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         //throw new UnsupportedOperationException("Not supported yet.");
-        System.out.println("Clicked");
+        //System.out.println("Clicked");
+        if(e.getSource() == buttons[2] && buttons[2].isEnabled()){
+            
+            JOptionPane.showMessageDialog(centerPanel, "Click on all of the tiles you would like to exchange");
+            buttons[4] = new JButton();
+            buttons[4].addMouseListener(this);
+            southPanel.add(buttons[4]);
+            buttons[4].setText("Accept");
+            southPanel.updateUI();
+            exchange = true;
+            buttons[2].setEnabled(false);
+            //changeTurn();
+        }
+        
+         for(int i = 0; i < 7; i++){
+             if(e.getSource() == playerOneHand.get(i).getButton()){
+                 if(turnValue == 1 && exchange && !playerOneHand.get(i).getButton().isEnabled()){
+                     playerOneHand.get(i).getButton().setEnabled(true);
+                 }
+                 if(turnValue == 1 && exchange && playerOneHand.get(i).getButton().isEnabled()){
+                     playerOneHand.get(i).getButton().setEnabled(false);
+                     
+                 }
+                 
+             }
+         }
+        if(e.getSource() == buttons[4]){
+            for(int i = 6; i >= 0; i--){
+                if(!playerOneHand.get(i).getButton().isEnabled()){
+                    playerOneHand.get(i).getButton().setEnabled(true);
+                    theBag.getBag().push(playerOneHand.get(i));
+                    playerOneHand.remove(i);
+                    
+                }
+            }
+            theBag.shuffleBag();
+            southPanel.removeAll();
+            for(int i = 0; i < 7; i++){
+                playerOneHand.add(theBag.getBag().pop());
+                southPanel.add(playerOneHand.get(i).getButton());
+                playerOneHand.get(i).getButton().addMouseListener(this);
+                southPanel.updateUI();
+            }
+            buttons[2].setEnabled(true);
+            
+        }
     }
 
     @Override

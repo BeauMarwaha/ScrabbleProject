@@ -1,18 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package scrabblegame;
 
 import java.util.*;
 
-/**
- *
- * @author 15troupj
- */
 public class Bag {
-    //String[] alphabet = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-    //int[] pV = {1,2,3,4,5,8,10};
+    
     Stack<Tile> bag = new Stack<Tile>();
     public Bag(){
         for(int i = 0; i < 1; i++){

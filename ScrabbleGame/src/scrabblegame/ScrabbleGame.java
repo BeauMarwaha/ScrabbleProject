@@ -1,10 +1,6 @@
 
 package scrabblegame;
 
-/**
- *
- * @author 15troupj
- */
 public class ScrabbleGame {
 
     

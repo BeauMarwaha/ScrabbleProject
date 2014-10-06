@@ -6,10 +6,6 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-/**
- *
- * @author 15troupj
- */
 public class window implements MouseListener{
     int turnValue = 1;
     int pOneScore = 0;
@@ -61,14 +57,6 @@ public class window implements MouseListener{
         playerOneNumber.setFont(new Font("Verdana",1,14));
         playerTwoNumber.setFont(new Font("Verdana",1,14));
         
-        
-        //SOUTH
-        for(int i = 0; i < 9 ; i++){
-            //Example 
-            
-            //southPanel.add(new JButton("Hold"));
-            
-        }
         
         //CENTER
         centerPanel.setBackground(Color.BLACK);
@@ -193,8 +181,6 @@ public class window implements MouseListener{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet.");
-        //System.out.println("Clicked");
         if(e.getSource() == buttons[2] && buttons[2].isEnabled()){
             
             JOptionPane.showMessageDialog(centerPanel, "Click on all of the tiles you would like to exchange");

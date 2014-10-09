@@ -15,10 +15,10 @@ public class window implements MouseListener{
     JPanel centerPanel = new JPanel(new GridLayout(15,15,2,2));
     JPanel southPanel = new JPanel(new GridLayout(1,0,2,2));
     JPanel eastPanel = new JPanel(new GridLayout(2,1));
-    JPanel buttonsPanel = new JPanel(new GridLayout(4,1));
+    JPanel buttonsPanel = new JPanel(new GridLayout(5,1));
     JPanel scoresPanel = new JPanel(new GridLayout(6,1));
     JPanel[][] board = new JPanel[15][15];
-    JButton[] buttons = new JButton[5];
+    JButton[] buttons = new JButton[6];
     JButton[] hand = new JButton[0];
     JLabel turn = new JLabel("Whose Turn: ");
     JLabel playerOne = new JLabel("Player One Score: ");
@@ -52,10 +52,12 @@ public class window implements MouseListener{
     ImageIcon myPicture = new ImageIcon("src\\pictures\\ScrabbleInfoPanel.png");
     JLabel picLabel = new JLabel(myPicture);
     boolean exchange = false;
+    boolean clickLetter = false;
     
     Bag theBag = new Bag();
     ArrayList<Tile> playerOneHand = new ArrayList<Tile>();
     ArrayList<Tile> playerTwoHand = new ArrayList<Tile>();
+    ArrayList<Tile> hold = new ArrayList<Tile>();
     public window(){
         window.setVisible(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,7 +83,8 @@ public class window implements MouseListener{
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
                 board[i][j] = new JPanel();
-                centerPanel.add(board[i][j]); 
+                centerPanel.add(board[i][j]);
+                board[i][j].addMouseListener(this);
             }
         }
         
@@ -265,7 +268,7 @@ public class window implements MouseListener{
         //EAST
         eastPanel.add(scoresPanel);
         eastPanel.add(buttonsPanel);
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 5; i++){
             buttons[i] = new JButton();
             buttons[i].addMouseListener(this);
             buttonsPanel.add(buttons[i]);
@@ -273,7 +276,8 @@ public class window implements MouseListener{
         buttons[0].setText("Save");
         buttons[1].setText("Load");
         buttons[2].setText("Exchange");
-        buttons[3].setText("Exit");
+        buttons[3].setText("End Turn");
+        buttons[4].setText("Exit");
         
         turn.setPreferredSize(new Dimension(75,50));
         scoresPanel.add(turn);
@@ -315,47 +319,78 @@ public class window implements MouseListener{
         if(e.getSource() == buttons[2] && buttons[2].isEnabled()){
             
             JOptionPane.showMessageDialog(centerPanel, "Click on all of the tiles you would like to exchange");
-            buttons[4] = new JButton();
-            buttons[4].addMouseListener(this);
-            southPanel.add(buttons[4]);
-            buttons[4].setText("Accept");
+            buttons[5] = new JButton();
+            buttons[5].addMouseListener(this);
+            southPanel.add(buttons[5]);
+            buttons[5].setText("Accept");
             southPanel.updateUI();
             exchange = true;
             buttons[2].setEnabled(false);
         }
         
-         for(int i = 0; i < 7; i++){
-             if(e.getSource() == playerOneHand.get(i).getButton()){
-                 
-                 if(turnValue == 1 && exchange && !playerOneHand.get(i).getButton().isEnabled()){
+         for(int i = 0; i < playerOneHand.size(); i++){
+            if(e.getSource() == playerOneHand.get(i).getButton() ){
+                if(turnValue == 1 && !playerOneHand.get(i).getButton().isEnabled()){
                      playerOneHand.get(i).getButton().setEnabled(true);
-                 }
-                 if(turnValue == 1 && exchange && playerOneHand.get(i).getButton().isEnabled()){
+                     clickLetter = false;
+                 }else if(turnValue == 1 && playerOneHand.get(i).getButton().isEnabled()){
                      playerOneHand.get(i).getButton().setEnabled(false);
+                     clickLetter =true;
                      
                  }
-                 
-             }
-         }
-         for(int i = 0; i < 7; i++){
-             if(e.getSource() == playerTwoHand.get(i).getButton()){
-                 
-                 if(turnValue == 2 && exchange && !playerTwoHand.get(i).getButton().isEnabled()){
-                     
+            }
+        }
+        for(int i = 0; i < playerTwoHand.size(); i++){
+            if(e.getSource() == playerTwoHand.get(i).getButton() ){
+                if(turnValue == 2 && !playerTwoHand.get(i).getButton().isEnabled()){
                      playerTwoHand.get(i).getButton().setEnabled(true);
-                 }
-                 if(turnValue == 2 && exchange && playerTwoHand.get(i).getButton().isEnabled()){
-                     
+                     clickLetter = false;
+                 }else if(turnValue == 2 && playerTwoHand.get(i).getButton().isEnabled()){
                      playerTwoHand.get(i).getButton().setEnabled(false);
+                     clickLetter = true;
                      
                  }
-                 
-             }
-         }
-        if(e.getSource() == buttons[4]){
+            }
+        }
+         
+         if(e.getSource() == buttons[4]){
+            System.exit(0);
+        }
+        if(e.getSource() == buttons[5]){
             changeTurn();
         }
-        
+        for(int i = 0; i < 15; i++){
+            for(int j = 0; j < 15; j++){
+                if(e.getSource() == board[i][j] && clickLetter){
+                    if(turnValue == 1){
+                        for(int k = 0; k < playerOneHand.size(); k++){
+                            if(!playerOneHand.get(k).getButton().isEnabled()){
+                                board[i][j].add(new JLabel(playerOneHand.get(k).getLetter()));
+                                centerPanel.updateUI();
+                                southPanel.remove(playerOneHand.get(k).getButton());
+                                hold.add(playerOneHand.get(k));
+                                playerOneHand.remove(k);
+                                clickLetter = false;
+                                System.out.println(hold);
+                            }
+                        }
+                    }else{
+                        for(int k = 0; k < 7; k++){
+                            if(!playerTwoHand.get(k).getButton().isEnabled()){
+                                board[i][j].add(new JLabel(playerTwoHand.get(k).getLetter()));
+                                centerPanel.updateUI();
+                                southPanel.remove(playerTwoHand.get(k).getButton());
+                                hold.add(playerTwoHand.get(k));
+                                playerTwoHand.remove(k);
+                                clickLetter = false;
+                                System.out.println(hold);
+                            }
+                        }
+                    }
+                    
+                } 
+            }
+        }
     }
 
     @Override

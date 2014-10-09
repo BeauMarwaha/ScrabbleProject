@@ -333,7 +333,7 @@ public class window implements MouseListener{
                 if(turnValue == 1 && !playerOneHand.get(i).getButton().isEnabled()){
                      playerOneHand.get(i).getButton().setEnabled(true);
                      clickLetter = false;
-                 }else if(turnValue == 1 && playerOneHand.get(i).getButton().isEnabled()){
+                 }else if(turnValue == 1 && (exchange ||!clickLetter) && playerOneHand.get(i).getButton().isEnabled()){
                      playerOneHand.get(i).getButton().setEnabled(false);
                      clickLetter =true;
                      
@@ -345,7 +345,7 @@ public class window implements MouseListener{
                 if(turnValue == 2 && !playerTwoHand.get(i).getButton().isEnabled()){
                      playerTwoHand.get(i).getButton().setEnabled(true);
                      clickLetter = false;
-                 }else if(turnValue == 2 && playerTwoHand.get(i).getButton().isEnabled()){
+                 }else if(turnValue == 2 && (exchange ||!clickLetter) && playerTwoHand.get(i).getButton().isEnabled()){
                      playerTwoHand.get(i).getButton().setEnabled(false);
                      clickLetter = true;
                      

@@ -3,7 +3,10 @@ package scrabblegame;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public class window implements MouseListener, ActionListener{
@@ -153,6 +156,10 @@ public class window implements MouseListener, ActionListener{
     JLabel picLabel = new JLabel(myPicture);
     boolean exchange = false;
     boolean clickLetter = false;
+    boolean turnOne = true;
+    String[][] boardLetter = new String[15][15];
+    String[][] boardLetterHold = new String[15][15];
+    String placedWord = "";
     
     Bag theBag = new Bag();
     ArrayList<Tile> playerOneHand = new ArrayList<Tile>();
@@ -216,6 +223,8 @@ public class window implements MouseListener, ActionListener{
                 board[i][j] = new JPanel();
                 centerPanel.add(board[i][j]);
                 board[i][j].addMouseListener(this);
+                boardLetter[i][j] = "";
+                boardLetterHold[i][j] = "";
             }
         }
         
@@ -484,6 +493,18 @@ public class window implements MouseListener, ActionListener{
             }
         }
          
+        if(e.getSource() == buttons[3]){
+            System.out.println(placedWord);
+            if (checkTurnOne()){
+                try {
+                    checkWord();
+                } catch (IOException ex) {
+                    Logger.getLogger(window.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+        }
+        
          if(e.getSource() == buttons[4]){
             System.exit(0);
         }
@@ -492,11 +513,14 @@ public class window implements MouseListener, ActionListener{
         }
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                if(e.getSource() == board[i][j] && clickLetter){
+                if(e.getSource() == board[i][j] && clickLetter && boardLetterHold[i][j].equals("")){
                     if(turnValue == 1){
                         for(int k = 0; k < playerOneHand.size(); k++){
                             if(!playerOneHand.get(k).getButton().isEnabled()){
+                                buttons[2].setEnabled(false);
                                 board[i][j].add(new JLabel(playerOneHand.get(k).getLetter()));
+                                boardLetterHold[i][j] = playerOneHand.get(k).getLetter();
+                                placedWord += playerOneHand.get(k).getLetter();
                                 centerPanel.updateUI();
                                 southPanel.remove(playerOneHand.get(k).getButton());
                                 hold.add(playerOneHand.get(k));
@@ -505,10 +529,14 @@ public class window implements MouseListener, ActionListener{
                                 System.out.println(hold);
                             }
                         }
+                        
                     }else{
                         for(int k = 0; k < 7; k++){
                             if(!playerTwoHand.get(k).getButton().isEnabled()){
+                                buttons[2].setEnabled(false);
                                 board[i][j].add(new JLabel(playerTwoHand.get(k).getLetter()));
+                                boardLetterHold[i][j] = playerTwoHand.get(k).getLetter();
+                                placedWord += playerOneHand.get(k).getLetter();
                                 centerPanel.updateUI();
                                 southPanel.remove(playerTwoHand.get(k).getButton());
                                 hold.add(playerTwoHand.get(k));
@@ -519,8 +547,10 @@ public class window implements MouseListener, ActionListener{
                         }
                     }
                     
-                } 
+                }
+                
             }
+            
         }
     }
 
@@ -543,12 +573,12 @@ public class window implements MouseListener, ActionListener{
     public void mouseExited(MouseEvent e) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
-    public void changeTurn(){
+public void changeTurn(){
         
         if(turnValue == 2){
             southPanel.removeAll();
             
-            for(int i = 6; i >= 0; i--){
+            for(int i = playerTwoHand.size() - 1; i >= 0; i--){
                 if(!playerTwoHand.get(i).getButton().isEnabled()){
                     playerTwoHand.get(i).getButton().setEnabled(true);
                     theBag.getBag().push(playerTwoHand.get(i));
@@ -578,7 +608,7 @@ public class window implements MouseListener, ActionListener{
         }else{
             southPanel.removeAll();
             
-            for(int i = 6; i >= 0; i--){
+            for(int i = playerOneHand.size() - 1; i >= 0; i--){
                 if(!playerOneHand.get(i).getButton().isEnabled()){
                     playerOneHand.get(i).getButton().setEnabled(true);
                     theBag.getBag().push(playerOneHand.get(i));
@@ -614,6 +644,86 @@ public class window implements MouseListener, ActionListener{
         
         for(int i = 0; i < 7; i++){
             System.out.print(playerTwoHand.get(i).getLetter());
+        }
+    }
+    
+    public void checkWord()throws IOException, FileNotFoundException {
+        int count = 0;
+        boolean wordFound = false;
+        String word = " ";
+        System.out.println(placedWord.substring(0, 1));
+        BufferedReader rd = new BufferedReader(new FileReader("src\\words\\"+placedWord.substring(0, 1) +".txt"));
+        while(word != null){
+            if(word.equalsIgnoreCase(placedWord)){  
+                wordFound = true;
+                rd.close();
+                break;
+            }
+            count++;
+            System.out.println(count);
+            word = rd.readLine();
+            //System.out.println(word);   
+            
+        }
+        if(wordFound){
+            System.out.println("Found");
+            for(int i = 0; i < 15; i++){
+                for(int j = 0; j < 15; j++){
+                    boardLetter[i][j] = boardLetterHold[i][j];
+                 }
+            }
+            changeTurn();
+        }else{
+            System.out.println("Not Found");
+            for(int i = hold.size() - 1; i >= 0 ; i--){
+                hold.get(i).getButton().setEnabled(true);
+                playerOneHand.add(hold.remove(i));
+                
+            }
+            for(int i = 0; i < 15; i++){
+                for(int j = 0; j < 15; j++){
+                    boardLetterHold[i][j] = boardLetter[i][j];
+                 }
+            }
+            changeTurn();
+        }
+        
+    }
+    public boolean checkTurnOne(){
+        if(turnOne && boardLetterHold[7][7].equalsIgnoreCase("")){
+            
+                for(int i = 0; i < 15; i++){
+                    for(int j = 0; j < 15; j++){
+                        if(!boardLetterHold[i][j].equalsIgnoreCase("")){
+                            boardLetterHold[i][j] = "";
+                            board[i][j].removeAll();
+                            board[i][j].updateUI();
+                        }
+                    }
+                }
+                for(int i = hold.size() - 1; i >= 0 ; i--){
+                    hold.get(i).getButton().setEnabled(true);
+                    playerOneHand.add(hold.remove(i));
+                    southPanel.add(playerOneHand.get(playerOneHand.size()-1).getButton());
+                }
+            System.out.println("False");
+            System.out.println("");
+            for(int i = 0; i < 7; i++){
+                System.out.print(playerOneHand.get(i).getLetter());
+            }
+
+            System.out.println("");
+
+            for(int i = 0; i < 7; i++){
+                System.out.print(playerTwoHand.get(i).getLetter());
+            }
+            southPanel.updateUI();
+            JOptionPane.showMessageDialog(null, "         One letter in you word \n must be placed on the black tile");
+            buttons[2].setEnabled(true);
+            return false;
+        }else{
+            System.out.println("True");
+            return true;
         }
     }
 

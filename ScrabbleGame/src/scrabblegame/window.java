@@ -195,6 +195,7 @@ public class window implements MouseListener, ActionListener{
         themeMenu.add(themeV);
         themeMenu.add(themeC);
         
+        exitAction.addActionListener(this);
         themeD.addActionListener(this);
         themeSM.addActionListener(this);
         themeBT.addActionListener(this);
@@ -1636,6 +1637,9 @@ public class window implements MouseListener, ActionListener{
             board[14][11].setBackground(myColorFourC);
             board[14][14].setBackground(myColorC);
             centerPanel.updateUI();
+        }
+        if(e.getSource() == exitAction){
+            System.exit(0);
         }
     }
 }

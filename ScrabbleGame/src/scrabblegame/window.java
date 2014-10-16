@@ -730,7 +730,7 @@ public void changeTurn(){
             }
             southPanel.updateUI();
             JOptionPane.showMessageDialog(null, "         One letter in you word \n must be placed on the black tile");
-            buttons[2].setEnabled(true);
+            buttons[0].setEnabled(true);
             return false;
         }else{
             System.out.println("True");

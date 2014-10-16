@@ -19,9 +19,10 @@ public class window implements MouseListener, ActionListener{
     JPanel southPanel = new JPanel(new GridLayout(1,0,2,2));
     JPanel eastPanel = new JPanel(new GridLayout(2,1));
     JPanel buttonsPanel = new JPanel(new GridLayout(5,1));
+    JLabel[] emptyLabels = new JLabel[3];
     JPanel scoresPanel = new JPanel(new GridLayout(6,1));
     JPanel[][] board = new JPanel[15][15];
-    JButton[] buttons = new JButton[6];
+    JButton[] buttons = new JButton[3];
     JButton[] hand = new JButton[0];
     JLabel turn = new JLabel("Whose Turn: ");
     JLabel playerOne = new JLabel("Player One Score: ");
@@ -42,6 +43,7 @@ public class window implements MouseListener, ActionListener{
     JMenu themeMenu = new JMenu("Board Theme");
     
     JMenuItem exitAction = new JMenuItem("Exit");
+    JMenuItem newGameAction = new JMenuItem("New Game");
     
     JMenuItem themeD = new JMenuItem("Default");
     JMenuItem themeSM = new JMenuItem("Strawberry Mousse");
@@ -57,11 +59,17 @@ public class window implements MouseListener, ActionListener{
     JMenuItem themeC = new JMenuItem("Classical");
     
     //Default Color Scheme
-    Color myColor = new Color(200,0,0);    
+    //triple word box color
+    Color myColor = new Color(200,0,0); 
+    //triple letter box color
     Color myColorTwo = new Color(64,64,64);  
-    Color myColorThree = new Color(255,255,255); 
+    //side panels color
+    Color myColorThree = new Color(255,255,255);
+    //double letter box color
     Color myColorFour = new Color(192, 192, 192);    
+    //double word box color
     Color myColorFive = new Color(128,128,128);  
+    //empty box color
     Color myColorSix = new Color(238,238,238);
     
     //Strawberry Mousse color scheme
@@ -189,6 +197,8 @@ public class window implements MouseListener, ActionListener{
         menuBar.add(themeMenu);
         
         fileMenu.add(exitAction);
+        fileMenu.add(newGameAction);
+        
         themeMenu.add(themeD);
         themeMenu.add(themeSM);
         themeMenu.add(themeBT);
@@ -203,6 +213,8 @@ public class window implements MouseListener, ActionListener{
         themeMenu.add(themeC);
         
         exitAction.addActionListener(this);
+        newGameAction.addActionListener(this);
+        
         themeD.addActionListener(this);
         themeSM.addActionListener(this);
         themeBT.addActionListener(this);
@@ -408,16 +420,18 @@ public class window implements MouseListener, ActionListener{
         //EAST
         eastPanel.add(scoresPanel);
         eastPanel.add(buttonsPanel);
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 3; i++){
+            emptyLabels[i] = new JLabel();
+            buttonsPanel.add(emptyLabels[i]);
+        }
+        for(int i = 0; i < 2; i++){
             buttons[i] = new JButton();
             buttons[i].addMouseListener(this);
             buttonsPanel.add(buttons[i]);
         }
-        buttons[0].setText("Save");
-        buttons[1].setText("Load");
-        buttons[2].setText("Exchange");
-        buttons[3].setText("End Turn");
-        buttons[4].setText("Exit");
+        buttons[0].setText("Exchange");
+        buttons[1].setText("End Turn");
+        buttonsPanel.setBackground(myColorThree);
         
         turn.setPreferredSize(new Dimension(75,50));
         scoresPanel.add(turn);
@@ -456,16 +470,16 @@ public class window implements MouseListener, ActionListener{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getSource() == buttons[2] && buttons[2].isEnabled()){
+        if(e.getSource() == buttons[0] && buttons[0].isEnabled()){
             
             JOptionPane.showMessageDialog(centerPanel, "Click on all of the tiles you would like to exchange");
-            buttons[5] = new JButton();
-            buttons[5].addMouseListener(this);
-            southPanel.add(buttons[5]);
-            buttons[5].setText("Accept");
+            buttons[2] = new JButton();
+            buttons[2].addMouseListener(this);
+            southPanel.add(buttons[2]);
+            buttons[2].setText("Accept");
             southPanel.updateUI();
             exchange = true;
-            buttons[2].setEnabled(false);
+            buttons[0].setEnabled(false);
         }
         
          for(int i = 0; i < playerOneHand.size(); i++){
@@ -493,7 +507,7 @@ public class window implements MouseListener, ActionListener{
             }
         }
          
-        if(e.getSource() == buttons[3]){
+        if(e.getSource() == buttons[1]){
             System.out.println(placedWord);
             if (checkTurnOne()){
                 try {
@@ -505,10 +519,7 @@ public class window implements MouseListener, ActionListener{
             
         }
         
-         if(e.getSource() == buttons[4]){
-            System.exit(0);
-        }
-        if(e.getSource() == buttons[5]){
+        if(e.getSource() == buttons[2]){
             changeTurn();
         }
         for(int i = 0; i < 15; i++){
@@ -517,7 +528,7 @@ public class window implements MouseListener, ActionListener{
                     if(turnValue == 1){
                         for(int k = 0; k < playerOneHand.size(); k++){
                             if(!playerOneHand.get(k).getButton().isEnabled()){
-                                buttons[2].setEnabled(false);
+                                buttons[0].setEnabled(false);
                                 board[i][j].add(new JLabel(playerOneHand.get(k).getLetter()));
                                 boardLetterHold[i][j] = playerOneHand.get(k).getLetter();
                                 placedWord += playerOneHand.get(k).getLetter();
@@ -533,7 +544,7 @@ public class window implements MouseListener, ActionListener{
                     }else{
                         for(int k = 0; k < 7; k++){
                             if(!playerTwoHand.get(k).getButton().isEnabled()){
-                                buttons[2].setEnabled(false);
+                                buttons[0].setEnabled(false);
                                 board[i][j].add(new JLabel(playerTwoHand.get(k).getLetter()));
                                 boardLetterHold[i][j] = playerTwoHand.get(k).getLetter();
                                 placedWord += playerOneHand.get(k).getLetter();
@@ -594,7 +605,7 @@ public void changeTurn(){
 //                playerTwoHand.get(i).getButton().addMouseListener(this);
                 southPanel.updateUI();
             }
-            buttons[2].setEnabled(true);
+            buttons[0].setEnabled(true);
             
             for(int i = 0; i < 7; i++){
                 southPanel.add(playerOneHand.get(i).getButton());
@@ -624,7 +635,7 @@ public void changeTurn(){
 //                playerOneHand.get(i).getButton().addMouseListener(this);
                 southPanel.updateUI();
             }
-            buttons[2].setEnabled(true);
+            buttons[0].setEnabled(true);
             for(int i = 0; i < 7; i++){
                 southPanel.add(playerTwoHand.get(i).getButton());
                 playerTwoHand.get(i).getButton().addMouseListener(this);
@@ -1750,6 +1761,11 @@ public void changeTurn(){
         }
         if(e.getSource() == exitAction){
             System.exit(0);
+        }
+        
+        if(e.getSource() == newGameAction){
+            window.dispose();
+            window w = new window();
         }
     }
 }

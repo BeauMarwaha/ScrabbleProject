@@ -175,8 +175,8 @@ public class window implements MouseListener, ActionListener{
     boolean exchange = false;
     boolean clickLetter = false;
     boolean turnOne = true;
-    String[][] boardLetter = new String[15][15];
-    String[][] boardLetterHold = new String[15][15];
+    //String[][] boardLetter = new String[15][15];
+    //String[][] boardLetterHold = new String[15][15];
     String placedWord = "";
     
     Color colorHold;
@@ -185,6 +185,9 @@ public class window implements MouseListener, ActionListener{
     ArrayList<Tile> playerOneHand = new ArrayList<Tile>();
     ArrayList<Tile> playerTwoHand = new ArrayList<Tile>();
     ArrayList<Tile> hold = new ArrayList<Tile>();
+    
+    Tile[][] boardLetter = new Tile[15][15];
+    Tile[][] boardLetterHold = new Tile[15][15];
     public window(){
         window.setVisible(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -247,8 +250,8 @@ public class window implements MouseListener, ActionListener{
                 board[i][j] = new JPanel();
                 centerPanel.add(board[i][j]);
                 board[i][j].addMouseListener(this);
-                boardLetter[i][j] = "";
-                boardLetterHold[i][j] = "";
+                //boardLetter[i][j] = "";
+                //boardLetterHold[i][j] = "";
             }
         }
         
@@ -521,6 +524,12 @@ public class window implements MouseListener, ActionListener{
          
         if(e.getSource() == buttons[1]){
             System.out.println(placedWord);
+            if(downClick){
+                board[lastX+1][lastY].setBackground(colorHold);
+            }else if(rightClick){
+                board[lastX][lastY+1].setBackground(colorHold);
+            }
+            
             if (checkTurnOne()){
                 try {
                     checkWord();
@@ -528,6 +537,9 @@ public class window implements MouseListener, ActionListener{
                     Logger.getLogger(window.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            firstClick = 0;
+            downClick = false;
+            rightClick = false;
             
         }
         
@@ -536,7 +548,11 @@ public class window implements MouseListener, ActionListener{
         }
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                if(e.getSource() == board[i][j] && clickLetter && boardLetterHold[i][j].equals("")){
+                if(e.getSource() == board[i][j] && clickLetter && boardLetterHold[i][j] == null){
+                    
+//                    for(int p = 0; p < playerOneHand.size(); p++){
+//                        playerHold.add(playerOneHand.get(p));
+//                    }
                     if(turnValue == 1){
                         for(int k = 0; k < playerOneHand.size(); k++){
                             if(!playerOneHand.get(k).getButton().isEnabled()){
@@ -561,7 +577,7 @@ public class window implements MouseListener, ActionListener{
                                         System.out.println("Down");
                                         buttons[0].setEnabled(false);
                                         board[i][j].add(new JLabel(playerOneHand.get(k).getLetter()));
-                                        boardLetterHold[i][j] = playerOneHand.get(k).getLetter();
+                                        boardLetterHold[i][j] = playerOneHand.get(k);
                                         //placedWord += playerOneHand.get(k).getLetter();
                                         centerPanel.updateUI();
                                         southPanel.remove(playerOneHand.get(k).getButton());
@@ -577,7 +593,7 @@ public class window implements MouseListener, ActionListener{
                                         System.out.println("Right");
                                         buttons[0].setEnabled(false);
                                         board[i][j].add(new JLabel(playerOneHand.get(k).getLetter()));
-                                        boardLetterHold[i][j] = playerOneHand.get(k).getLetter();
+                                        boardLetterHold[i][j] = playerOneHand.get(k);
                                         //placedWord += playerOneHand.get(k).getLetter();
                                         centerPanel.updateUI();
                                         southPanel.remove(playerOneHand.get(k).getButton());
@@ -593,7 +609,7 @@ public class window implements MouseListener, ActionListener{
                                 }else if(firstClick == 0){
                                     buttons[0].setEnabled(false);
                                     board[i][j].add(new JLabel(playerOneHand.get(k).getLetter()));
-                                    boardLetterHold[i][j] = playerOneHand.get(k).getLetter();
+                                    boardLetterHold[i][j] = playerOneHand.get(k);
                                     //placedWord += playerOneHand.get(k).getLetter();
                                     centerPanel.updateUI();
                                     southPanel.remove(playerOneHand.get(k).getButton());
@@ -652,7 +668,7 @@ public class window implements MouseListener, ActionListener{
                                         System.out.println("Down");
                                         buttons[0].setEnabled(false);
                                         board[i][j].add(new JLabel(playerTwoHand.get(l).getLetter()));
-                                        boardLetterHold[i][j] = playerTwoHand.get(l).getLetter();
+                                        boardLetterHold[i][j] = playerTwoHand.get(l);
                                         //placedWord += playerTwoHand.get(l).getLetter();
                                         centerPanel.updateUI();
                                         southPanel.remove(playerTwoHand.get(l).getButton());
@@ -668,7 +684,7 @@ public class window implements MouseListener, ActionListener{
                                         System.out.println("Right");
                                         buttons[0].setEnabled(false);
                                         board[i][j].add(new JLabel(playerTwoHand.get(l).getLetter()));
-                                        boardLetterHold[i][j] = playerTwoHand.get(l).getLetter();
+                                        boardLetterHold[i][j] = playerTwoHand.get(l);
                                         //placedWord += playerTwoHand.get(l).getLetter();
                                         centerPanel.updateUI();
                                         southPanel.remove(playerTwoHand.get(l).getButton());
@@ -684,7 +700,7 @@ public class window implements MouseListener, ActionListener{
                                 }else if(firstClick == 0){
                                     buttons[0].setEnabled(false);
                                     board[i][j].add(new JLabel(playerTwoHand.get(l).getLetter()));
-                                    boardLetterHold[i][j] = playerTwoHand.get(l).getLetter();
+                                    boardLetterHold[i][j] = playerTwoHand.get(l);
                                     //placedWord += playerTwoHand.get(l).getLetter();
                                     centerPanel.updateUI();
                                     southPanel.remove(playerTwoHand.get(l).getButton());
@@ -824,21 +840,23 @@ public void changeTurn(){
         int count = 0;
         boolean wordFound = false;
         String word = " ";
+        
         if(downClick){
+            
             for(int i = 0; i <= (lastX - firstX); i++){
                 
-                placedWord += boardLetterHold[firstX + i][firstY];
+                placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
                 System.out.println(placedWord);
             }
         }else if(rightClick){
             for(int i = 0; i <= (lastY - firstY); i++){
-                placedWord += boardLetterHold[firstX ][firstY + i];
+                placedWord += boardLetterHold[firstX ][firstY + i].getLetter();
                 System.out.println("WORD");
                 System.out.println(placedWord + " WORD");
             }
         }
-        System.out.println(placedWord.substring(0, 1));
+
         BufferedReader rd = new BufferedReader(new FileReader("src\\words\\"+placedWord.substring(0, 1) +".txt"));
         while(word != null){
             if(word.equalsIgnoreCase(placedWord)){  
@@ -865,29 +883,32 @@ public void changeTurn(){
             for(int i = hold.size() - 1; i >= 0 ; i--){
                 hold.get(i).getButton().setEnabled(true);
                 playerOneHand.add(hold.remove(i));
-                
+                southPanel.add(playerOneHand.get(playerOneHand.size() - 1).getButton());
             }
             for(int i = 0; i < 15; i++){
                 for(int j = 0; j < 15; j++){
-                    if(!boardLetter[i][j].equals(boardLetterHold[i][j])){
+//&& !boardLetter[i][j].getLetter().equals(boardLetterHold[i][j].getLetter()
+                    if(boardLetterHold[i][j] != null){
+                        System.out.println("Found Letter");
                         boardLetterHold[i][j] = boardLetter[i][j];
-                        board[i][j].remove(0);
+                        board[i][j].removeAll();
                     }
                     board[i][j].updateUI();
                  }
             }
+            southPanel.updateUI();
             
-            changeTurn();
         }
         
     }
     public boolean checkTurnOne(){
-        if(turnOne && boardLetterHold[7][7].equalsIgnoreCase("")){
+        //System.out.println(boardLetterHold[7][7].getLetter());
+        if(turnOne && (boardLetterHold[7][7] == null)){
             
                 for(int i = 0; i < 15; i++){
                     for(int j = 0; j < 15; j++){
-                        if(!boardLetterHold[i][j].equalsIgnoreCase("")){
-                            boardLetterHold[i][j] = "";
+                        if(boardLetterHold[i][j] != null){
+                            boardLetterHold[i][j] = null;
                             board[i][j].removeAll();
                             board[i][j].updateUI();
                         }

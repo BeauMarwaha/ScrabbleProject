@@ -79,7 +79,7 @@ public class Bag {
             
         }
         for(int i = 0; i < 12; i++){
-            Tile e = new Tile("E",12);
+            Tile e = new Tile("E",1);
             bag.push(e);
             
         }

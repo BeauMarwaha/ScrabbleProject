@@ -966,7 +966,24 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
+<<<<<<< HEAD
             placedWord = "";
+=======
+            
+            
+            for(int i = 0; i < hold.size(); i++){
+                if(turnValue == 1){
+                    pOneScore += hold.get(i).getPV();
+                }
+                if(turnValue == 2){
+                    pTwoScore += hold.get(i).getPV();
+                }
+            }
+            playerOneNumber.setText("" + pOneScore);
+            playerTwoNumber.setText("" + pTwoScore);
+            scoresPanel.updateUI();
+            
+>>>>>>> origin/master
             changeTurn();
         }else{
             System.out.println("Not Found");

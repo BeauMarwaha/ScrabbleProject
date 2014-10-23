@@ -605,6 +605,38 @@ public class window implements MouseListener, ActionListener{
                                         holdY = lastY;
                                         lastX = i;
                                         lastY = j;
+                                    }else if(lastY == j && lastX+2 == i && !rightClick && boardLetterHold[i][j-1] == null){
+                                        System.out.println("Down");
+                                        buttons[0].setEnabled(false);
+                                        board[i][j].add(new JLabel(playerOneHand.get(k).getLetter()));
+                                        boardLetterHold[i][j] = playerOneHand.get(k);
+                                        //placedWord += playerOneHand.get(k).getLetter();
+                                        centerPanel.updateUI();
+                                        southPanel.remove(playerOneHand.get(k).getButton());
+                                        hold.add(playerOneHand.get(k));
+                                        playerOneHand.remove(k);
+                                        clickLetter = false;
+                                        downClick = true;
+                                        holdX = lastX;
+                                        holdY = lastY;
+                                        lastX = i;
+                                        lastY = j;
+                                    }else if(lastY+2 == j && lastX == i && !downClick && boardLetterHold[i][j-1] == null){
+                                        System.out.println("Right");
+                                        buttons[0].setEnabled(false);
+                                        board[i][j].add(new JLabel(playerOneHand.get(k).getLetter()));
+                                        boardLetterHold[i][j] = playerOneHand.get(k);
+                                        //placedWord += playerOneHand.get(k).getLetter();
+                                        centerPanel.updateUI();
+                                        southPanel.remove(playerOneHand.get(k).getButton());
+                                        hold.add(playerOneHand.get(k));
+                                        playerOneHand.remove(k);
+                                        clickLetter = false;
+                                        rightClick = true;
+                                        holdX = lastX;
+                                        holdY = lastY;
+                                        lastX = i;
+                                        lastY = j;
                                     }
                                 }else if(firstClick == 0){
                                     buttons[0].setEnabled(false);
@@ -628,10 +660,22 @@ public class window implements MouseListener, ActionListener{
                                 
                                 if (firstClick == 0){
                                     firstClick = 1;
-                                    colorHold = board[i][j+1].getBackground();
-                                    colorHoldExtra = board[i+1][j].getBackground();
-                                    board[i+1][j].setBackground(Color.YELLOW);
-                                    board[i][j+1].setBackground(Color.YELLOW);
+                                    if(boardLetter[i][j+1] != null){
+                                        colorHold = board[i][j+2].getBackground();
+                                        board[i][j+2].setBackground(Color.YELLOW);
+                                    }else{
+                                        colorHold = board[i][j+1].getBackground();
+                                        board[i][j+1].setBackground(Color.YELLOW);
+                                    }
+                                    if(boardLetter[i][j] != null){
+                                        colorHoldExtra = board[i+1][j].getBackground();
+                                        board[i+2][j].setBackground(Color.YELLOW);                                   
+                                    }else{
+                                        colorHoldExtra = board[i+2][j].getBackground();
+                                        board[i+1][j].setBackground(Color.YELLOW);
+                                    }
+
+                                    
                                 }else if(downClick && (holdX+1 == i && holdY == j)){
                                     colorHold = board[i+1][j].getBackground();
                                     board[i+1][j].setBackground(Color.YELLOW);  
@@ -664,7 +708,7 @@ public class window implements MouseListener, ActionListener{
                                     
                                 }
                                 if(firstClick == 2){
-                                    if(lastX+1 == i && lastY == j && !rightClick){
+                                    if((lastX+1 == i && lastY == j && !rightClick) ){
                                         System.out.println("Down");
                                         buttons[0].setEnabled(false);
                                         board[i][j].add(new JLabel(playerTwoHand.get(l).getLetter()));
@@ -680,7 +724,39 @@ public class window implements MouseListener, ActionListener{
                                         holdY = lastY;
                                         lastX = i;
                                         lastY = j;
-                                    }else if(lastY+1 == j && lastX == i && !downClick){
+                                    }else if((lastY+1 == j && lastX == i && !downClick)){
+                                        System.out.println("Right");
+                                        buttons[0].setEnabled(false);
+                                        board[i][j].add(new JLabel(playerTwoHand.get(l).getLetter()));
+                                        boardLetterHold[i][j] = playerTwoHand.get(l);
+                                        //placedWord += playerTwoHand.get(l).getLetter();
+                                        centerPanel.updateUI();
+                                        southPanel.remove(playerTwoHand.get(l).getButton());
+                                        hold.add(playerTwoHand.get(l));
+                                        playerTwoHand.remove(l);
+                                        clickLetter = false;
+                                        rightClick = true;
+                                        holdX = lastX;
+                                        holdY = lastY;
+                                        lastX = i;
+                                        lastY = j;
+                                    }else if(lastY == j && lastX+2 == i && !rightClick ){
+                                        System.out.println("Down");
+                                        buttons[0].setEnabled(false);
+                                        board[i][j].add(new JLabel(playerTwoHand.get(l).getLetter()));
+                                        boardLetterHold[i][j] = playerTwoHand.get(l);
+                                        //placedWord += playerTwoHand.get(l).getLetter();
+                                        centerPanel.updateUI();
+                                        southPanel.remove(playerTwoHand.get(l).getButton());
+                                        hold.add(playerTwoHand.get(l));
+                                        playerTwoHand.remove(l);
+                                        clickLetter = false;
+                                        downClick = true;
+                                        holdX = lastX;
+                                        holdY = lastY;
+                                        lastX = i;
+                                        lastY = j;
+                                    }else if(lastY+2 == j && lastX == i && !downClick ){
                                         System.out.println("Right");
                                         buttons[0].setEnabled(false);
                                         board[i][j].add(new JLabel(playerTwoHand.get(l).getLetter()));
@@ -719,10 +795,22 @@ public class window implements MouseListener, ActionListener{
                                 
                                 if (firstClick == 0){
                                     firstClick = 1;
-                                    colorHold = board[i][j+1].getBackground();
-                                    colorHoldExtra = board[i+1][j].getBackground();
-                                    board[i+1][j].setBackground(Color.YELLOW);
-                                    board[i][j+1].setBackground(Color.YELLOW);
+                                    if(boardLetterHold[i][j+1] != null){
+                                        colorHold = board[i][j+2].getBackground();
+                                        board[i][j+2].setBackground(Color.YELLOW);
+                                    }else{
+                                        colorHold = board[i][j+1].getBackground();
+                                        board[i][j+1].setBackground(Color.YELLOW);
+                                    }
+                                    if(boardLetterHold[i+1][j] != null){
+                                        colorHoldExtra = board[i+2][j].getBackground();
+                                        board[i+2][j].setBackground(Color.YELLOW);                                   
+                                    }else{
+                                        colorHoldExtra = board[i+1][j].getBackground();
+                                        board[i+1][j].setBackground(Color.YELLOW);
+                                    }
+
+                                    
                                 }else if(downClick && (holdX+1 == i && holdY == j)){
                                     colorHold = board[i+1][j].getBackground();
                                     board[i+1][j].setBackground(Color.YELLOW);  
@@ -834,6 +922,7 @@ public void changeTurn(){
         for(int i = 0; i < 7; i++){
             System.out.print(playerTwoHand.get(i).getLetter());
         }
+        hold.clear();
     }
     
     public void checkWord()throws IOException, FileNotFoundException {
@@ -864,8 +953,8 @@ public void changeTurn(){
                 rd.close();
                 break;
             }
-            count++;
-            System.out.println(count);
+            //count++;
+            //System.out.println(count);
             word = rd.readLine();
             //System.out.println(word);   
             
@@ -877,18 +966,33 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
+            placedWord = "";
             changeTurn();
         }else{
             System.out.println("Not Found");
-            for(int i = hold.size() - 1; i >= 0 ; i--){
+            placedWord = "";
+            if(turnValue == 1){
+                for(int i = hold.size() - 1; i >= 0 ; i--){
                 hold.get(i).getButton().setEnabled(true);
-                playerOneHand.add(hold.remove(i));
+                playerOneHand.add(hold.get(i));
                 southPanel.add(playerOneHand.get(playerOneHand.size() - 1).getButton());
+                }
+            }else{
+                for(int i = hold.size() - 1; i >= 0 ; i--){
+                hold.get(i).getButton().setEnabled(true);
+                playerTwoHand.add(hold.get(i));
+                
+                southPanel.add(playerTwoHand.get(playerTwoHand.size() - 1).getButton());
+                }
             }
+            
+            
             for(int i = 0; i < 15; i++){
                 for(int j = 0; j < 15; j++){
 //&& !boardLetter[i][j].getLetter().equals(boardLetterHold[i][j].getLetter()
-                    if(boardLetterHold[i][j] != null){
+                    //&& !boardLetterHold[i][j].getLetter().equals(boardLetter[i][j].getLetter())
+                    if(boardLetterHold[i][j] != null && boardLetter[i][j] == null ){
+                       //if()
                         System.out.println("Found Letter");
                         boardLetterHold[i][j] = boardLetter[i][j];
                         board[i][j].removeAll();
@@ -904,7 +1008,7 @@ public void changeTurn(){
     public boolean checkTurnOne(){
         //System.out.println(boardLetterHold[7][7].getLetter());
         if(turnOne && (boardLetterHold[7][7] == null)){
-            
+            System.out.println("RAN");
                 for(int i = 0; i < 15; i++){
                     for(int j = 0; j < 15; j++){
                         if(boardLetterHold[i][j] != null){
@@ -920,7 +1024,7 @@ public void changeTurn(){
                     southPanel.add(playerOneHand.get(playerOneHand.size()-1).getButton());
                 }
             System.out.println("False");
-            System.out.println("");
+            System.out.println(hold + " Hold");
             for(int i = 0; i < 7; i++){
                 System.out.print(playerOneHand.get(i).getLetter());
             }

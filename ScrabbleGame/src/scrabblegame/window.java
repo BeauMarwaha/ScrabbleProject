@@ -252,8 +252,6 @@ public class window implements MouseListener, ActionListener{
                 board[i][j] = new JPanel();
                 centerPanel.add(board[i][j]);
                 board[i][j].addMouseListener(this);
-                //boardLetter[i][j] = "";
-                //boardLetterHold[i][j] = "";
             }
         }
         
@@ -618,9 +616,6 @@ public class window implements MouseListener, ActionListener{
                 
                 if(e.getSource() == board[i][j] && clickLetter && boardLetterHold[i][j] == null){
                     
-//                    for(int p = 0; p < playerOneHand.size(); p++){
-//                        playerHold.add(playerOneHand.get(p));
-//                    }
                        System.out.println("X " + (lastX + 2));
                        System.out.println("Y " + (lastY  + 2));
                        System.out.println(i);

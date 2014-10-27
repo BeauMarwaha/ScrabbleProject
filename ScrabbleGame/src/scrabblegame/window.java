@@ -23,7 +23,9 @@ public class window implements MouseListener, ActionListener{
     int firstClick = 0;
     boolean rightClick;
     boolean downClick;
-    
+    boolean downSkip = false;
+    boolean rightSkip = false;
+    boolean worked = false;
     JFrame window = new JFrame("Scrabble");
     JPanel centerPanel = new JPanel(new GridLayout(15,15,2,2));
     JPanel southPanel = new JPanel(new GridLayout(1,0,2,2));
@@ -601,6 +603,10 @@ public class window implements MouseListener, ActionListener{
             firstClick = 0;
             downClick = false;
             rightClick = false;
+            lastX = 0;
+            lastY = 0;
+            holdY = 0;
+            holdX = 0;
             
         }
         
@@ -609,11 +615,18 @@ public class window implements MouseListener, ActionListener{
         }
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
+                
                 if(e.getSource() == board[i][j] && clickLetter && boardLetterHold[i][j] == null){
                     
 //                    for(int p = 0; p < playerOneHand.size(); p++){
 //                        playerHold.add(playerOneHand.get(p));
 //                    }
+                       System.out.println("X " + (lastX + 2));
+                       System.out.println("Y " + (lastY  + 2));
+                       System.out.println(i);
+                       System.out.println(j);
+                       System.out.println("dSkip " + downSkip);
+                       System.out.println("rSkip " + rightSkip);
                     if(turnValue == 1){
                         for(int k = 0; k < playerOneHand.size(); k++){
                             if(!playerOneHand.get(k).getButton().isEnabled()){
@@ -626,16 +639,26 @@ public class window implements MouseListener, ActionListener{
                                         firstClick = 2;
                                         board[i][j].setBackground(colorHold);
                                         board[i+1][j-1].setBackground(colorHoldExtra);
-                                    }else if(downClick){
+                                    }else if(firstClick == 1 && downSkip){
+                                        firstClick = 2;
+                                        board[i][j].setBackground(colorHoldExtra);
+                                        board[i-2][j+1].setBackground(colorHold);
+                                    }else if(firstClick == 1 && rightSkip){
+                                        firstClick = 2;
                                         board[i][j].setBackground(colorHold);
-                                    }else if(rightClick){
+                                        board[i+1][j-2].setBackground(colorHoldExtra);
+                                    }else if(downClick || downSkip){
+                                        board[i][j].setBackground(colorHold);
+                                    }else if(rightClick || rightSkip){
                                         board[i][j].setBackground(colorHold);
                                     }
                                     
                                 }
+
                                 if(firstClick == 2){
                                     if(lastX+1 == i && lastY == j && !rightClick){
                                         System.out.println("Down");
+                                        worked = true;
                                         buttons[0].setEnabled(false);
                                         board[i][j].add(new JLabel(playerOneHand.get(k).getLetter()));
                                         boardLetterHold[i][j] = playerOneHand.get(k);
@@ -652,6 +675,7 @@ public class window implements MouseListener, ActionListener{
                                         lastY = j;
                                     }else if(lastY+1 == j && lastX == i && !downClick){
                                         System.out.println("Right");
+                                        worked = true;
                                         buttons[0].setEnabled(false);
                                         board[i][j].add(new JLabel(playerOneHand.get(k).getLetter()));
                                         boardLetterHold[i][j] = playerOneHand.get(k);
@@ -666,8 +690,9 @@ public class window implements MouseListener, ActionListener{
                                         holdY = lastY;
                                         lastX = i;
                                         lastY = j;
-                                    }else if(lastY == j && lastX+2 == i && !rightClick && boardLetterHold[i][j-1] == null){
-                                        System.out.println("Down");
+                                    }else if((lastY == j && lastX+2 == i) && downSkip){
+                                        System.out.println("Down 2");
+                                        worked = true;
                                         buttons[0].setEnabled(false);
                                         board[i][j].add(new JLabel(playerOneHand.get(k).getLetter()));
                                         boardLetterHold[i][j] = playerOneHand.get(k);
@@ -682,8 +707,9 @@ public class window implements MouseListener, ActionListener{
                                         holdY = lastY;
                                         lastX = i;
                                         lastY = j;
-                                    }else if(lastY+2 == j && lastX == i && !downClick && boardLetterHold[i][j-1] == null){
-                                        System.out.println("Right");
+                                    }else if((lastY+2 == j && lastX == i) && rightSkip){
+                                        System.out.println("Right 2");
+                                        worked = true;
                                         buttons[0].setEnabled(false);
                                         board[i][j].add(new JLabel(playerOneHand.get(k).getLetter()));
                                         boardLetterHold[i][j] = playerOneHand.get(k);
@@ -713,6 +739,8 @@ public class window implements MouseListener, ActionListener{
                                     
                                     firstX = i;
                                     firstY = j;
+                                    holdX = i;
+                                    holdY = j;
                                     lastX = i;
                                     lastY = j;
                                     System.out.println("");
@@ -724,25 +752,49 @@ public class window implements MouseListener, ActionListener{
                                     if(boardLetter[i][j+1] != null){
                                         colorHold = board[i][j+2].getBackground();
                                         board[i][j+2].setBackground(Color.YELLOW);
+                                        rightSkip = true;
                                     }else{
                                         colorHold = board[i][j+1].getBackground();
                                         board[i][j+1].setBackground(Color.YELLOW);
                                     }
                                     if(boardLetter[i][j] != null){
-                                        colorHoldExtra = board[i+1][j].getBackground();
-                                        board[i+2][j].setBackground(Color.YELLOW);                                   
-                                    }else{
                                         colorHoldExtra = board[i+2][j].getBackground();
+                                        board[i+2][j].setBackground(Color.YELLOW);
+                                        downSkip = true;
+                                    }else{
+                                        colorHoldExtra = board[i+1][j].getBackground();
                                         board[i+1][j].setBackground(Color.YELLOW);
                                     }
 
                                     
-                                }else if(downClick && (holdX+1 == i && holdY == j)){
+                                }else if(downClick && (holdX+1 == i && holdY == j) && worked){
+                                    if(boardLetter[i+1][j] != null){
+                                            colorHold = board[i+2][j].getBackground();
+                                            board[i+2][j].setBackground(Color.YELLOW);
+                                            downSkip = true;
+                                        }else{
+                                            colorHold = board[i+1][j].getBackground();
+                                            board[i+1][j].setBackground(Color.YELLOW);
+                                        } 
+                                    worked = false;
+                                }else if(rightClick && (holdY+1 == j && holdX == i) && worked){
+                                    if(boardLetter[i][j+1] != null){
+                                            colorHold = board[i][j+2].getBackground();
+                                            board[i][j+2].setBackground(Color.YELLOW);
+                                            rightSkip = true;
+                                        }else{
+                                            colorHold = board[i][j+1].getBackground();
+                                            board[i][j+1].setBackground(Color.YELLOW);
+                                        }
+                                    worked = false;
+                                }else if(downSkip && worked){
                                     colorHold = board[i+1][j].getBackground();
-                                    board[i+1][j].setBackground(Color.YELLOW);  
-                                }else if(rightClick && (holdY+1 == j && holdX == i)){
+                                    board[i+1][j].setBackground(Color.YELLOW);
+                                    worked = false;
+                                }else if(rightSkip&& worked){
                                     colorHold = board[i][j+1].getBackground();
-                                    board[i][j+1].setBackground(Color.YELLOW);  
+                                    board[i][j+1].setBackground(Color.YELLOW);
+                                    worked = false;
                                 }
                                 
                             }
@@ -761,6 +813,14 @@ public class window implements MouseListener, ActionListener{
                                         firstClick = 2;
                                         board[i][j].setBackground(colorHold);
                                         board[i+1][j-1].setBackground(colorHoldExtra);
+                                    }else if(firstClick == 1 && downSkip){
+                                        firstClick = 2;
+                                        board[i][j].setBackground(colorHoldExtra);
+                                        board[i-2][j+1].setBackground(colorHold);
+                                    }else if(firstClick == 1 && rightSkip){
+                                        firstClick = 2;
+                                        board[i][j].setBackground(colorHold);
+                                        board[i+1][j-2].setBackground(colorHoldExtra);
                                     }else if(downClick){
                                         board[i][j].setBackground(colorHold);
                                     }else if(rightClick){
@@ -769,8 +829,9 @@ public class window implements MouseListener, ActionListener{
                                     
                                 }
                                 if(firstClick == 2){
-                                    if((lastX+1 == i && lastY == j && !rightClick) ){
+                                    if((lastX+1 == i && lastY == j && !rightClick ) ){
                                         System.out.println("Down");
+                                        worked = true;
                                         buttons[0].setEnabled(false);
                                         board[i][j].add(new JLabel(playerTwoHand.get(l).getLetter()));
                                         boardLetterHold[i][j] = playerTwoHand.get(l);
@@ -785,9 +846,10 @@ public class window implements MouseListener, ActionListener{
                                         holdY = lastY;
                                         lastX = i;
                                         lastY = j;
-                                    }else if((lastY+1 == j && lastX == i && !downClick)){
+                                    }else if((lastY+1 == j && lastX == i && !downClick )){
                                         System.out.println("Right");
                                         buttons[0].setEnabled(false);
+                                        worked = true;
                                         board[i][j].add(new JLabel(playerTwoHand.get(l).getLetter()));
                                         boardLetterHold[i][j] = playerTwoHand.get(l);
                                         //placedWord += playerTwoHand.get(l).getLetter();
@@ -801,9 +863,10 @@ public class window implements MouseListener, ActionListener{
                                         holdY = lastY;
                                         lastX = i;
                                         lastY = j;
-                                    }else if(lastY == j && lastX+2 == i && !rightClick ){
-                                        System.out.println("Down");
+                                    }else if((lastY == j && lastX+2 == i) && downSkip ){
+                                        System.out.println("Down 2");
                                         buttons[0].setEnabled(false);
+                                        worked = true;
                                         board[i][j].add(new JLabel(playerTwoHand.get(l).getLetter()));
                                         boardLetterHold[i][j] = playerTwoHand.get(l);
                                         //placedWord += playerTwoHand.get(l).getLetter();
@@ -817,9 +880,11 @@ public class window implements MouseListener, ActionListener{
                                         holdY = lastY;
                                         lastX = i;
                                         lastY = j;
-                                    }else if(lastY+2 == j && lastX == i && !downClick ){
-                                        System.out.println("Right");
+                                    }else if((lastY+2 == j && lastX == i) && rightSkip ){
+                                        
+                                        System.out.println("Right 2");
                                         buttons[0].setEnabled(false);
+                                        worked = true;
                                         board[i][j].add(new JLabel(playerTwoHand.get(l).getLetter()));
                                         boardLetterHold[i][j] = playerTwoHand.get(l);
                                         //placedWord += playerTwoHand.get(l).getLetter();
@@ -848,6 +913,8 @@ public class window implements MouseListener, ActionListener{
                                     
                                     firstX = i;
                                     firstY = j;
+                                    holdX = i;
+                                    holdY = j;
                                     lastX = i;
                                     lastY = j;
                                     System.out.println("");
@@ -859,25 +926,49 @@ public class window implements MouseListener, ActionListener{
                                     if(boardLetterHold[i][j+1] != null){
                                         colorHold = board[i][j+2].getBackground();
                                         board[i][j+2].setBackground(Color.YELLOW);
+                                        rightSkip = true;
                                     }else{
                                         colorHold = board[i][j+1].getBackground();
                                         board[i][j+1].setBackground(Color.YELLOW);
                                     }
                                     if(boardLetterHold[i+1][j] != null){
                                         colorHoldExtra = board[i+2][j].getBackground();
-                                        board[i+2][j].setBackground(Color.YELLOW);                                   
+                                        board[i+2][j].setBackground(Color.YELLOW);
+                                        downSkip = true;
                                     }else{
                                         colorHoldExtra = board[i+1][j].getBackground();
                                         board[i+1][j].setBackground(Color.YELLOW);
                                     }
 
                                     
-                                }else if(downClick && (holdX+1 == i && holdY == j)){
+                                }else if(downClick && (holdX+1 == i && holdY == j) && worked){
+                                    if(boardLetter[i+1][j] != null){
+                                            colorHold = board[i+2][j].getBackground();
+                                            board[i+2][j].setBackground(Color.YELLOW);
+                                            downSkip = true;
+                                        }else{
+                                            colorHold = board[i+1][j].getBackground();
+                                            board[i+1][j].setBackground(Color.YELLOW);
+                                        } 
+                                    worked = false;
+                                }else if(rightClick && (holdY+1 == j && holdX == i) && worked){
+                                    if(boardLetter[i][j+1] != null){
+                                            colorHold = board[i][j+2].getBackground();
+                                            board[i][j+2].setBackground(Color.YELLOW);
+                                            rightSkip = true;
+                                        }else{
+                                            colorHold = board[i][j+1].getBackground();
+                                            board[i][j+1].setBackground(Color.YELLOW);
+                                        }
+                                    worked = false;
+                                }else if(downSkip && worked){
                                     colorHold = board[i+1][j].getBackground();
-                                    board[i+1][j].setBackground(Color.YELLOW);  
-                                }else if(rightClick && (holdY+1 == j && holdX == i)){
+                                    board[i+1][j].setBackground(Color.YELLOW);
+                                    worked = false;
+                                }else if(rightSkip&& worked){
                                     colorHold = board[i][j+1].getBackground();
-                                    board[i][j+1].setBackground(Color.YELLOW);  
+                                    board[i][j+1].setBackground(Color.YELLOW);
+                                    worked = false;
                                 }
                                 
                             }
@@ -885,6 +976,11 @@ public class window implements MouseListener, ActionListener{
                         
                             }
                         }
+//                    System.out.println("Cord");
+//                    System.out.println("X " + (lastX));
+//                    System.out.println("Y " + (lastY));
+//                    System.out.println("X " + (lastX + 2));
+//                    System.out.println("Y " + (lastY  + 2));
                     }
                     
                 }
@@ -1027,7 +1123,13 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
+<<<<<<< HEAD
+
             placedWord = "";
+
+=======
+            placedWord = "";
+>>>>>>> origin/master
             
             if(downClick){
                 int pOneScoreTemp = 0;

@@ -1062,17 +1062,31 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
+<<<<<<< HEAD
 
             placedWord = "";
 
+=======
+            placedWord = "";
+>>>>>>> origin/master
             
-            
-            for(int i = 0; i < hold.size(); i++){
-                if(turnValue == 1){
-                    pOneScore += hold.get(i).getPV();
+            if(downClick){
+                for(int i = 0; i <= (lastX - firstX); i++){
+                    if(turnValue == 1){
+                        pOneScore += boardLetterHold[firstX + i][firstY].getPV();
+                    }
+                    if(turnValue == 2){
+                        pTwoScore += boardLetterHold[firstX + i][firstY].getPV();
+                    }
                 }
-                if(turnValue == 2){
-                    pTwoScore += hold.get(i).getPV();
+            }else if(rightClick){
+                for(int i = 0; i <= (lastY - firstY); i++){
+                    if(turnValue == 1){
+                        pOneScore += boardLetterHold[firstX][firstY + i].getPV();
+                    }
+                    if(turnValue == 2){
+                        pTwoScore += boardLetterHold[firstX][firstY + i].getPV();
+                    }
                 }
             }
             playerOneNumber.setText("" + pOneScore);

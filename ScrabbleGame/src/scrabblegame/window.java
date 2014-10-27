@@ -175,8 +175,6 @@ public class window implements MouseListener, ActionListener{
     boolean exchange = false;
     boolean clickLetter = false;
     boolean turnOne = true;
-    //String[][] boardLetter = new String[15][15];
-    //String[][] boardLetterHold = new String[15][15];
     String placedWord = "";
     
     Color colorHold;
@@ -185,6 +183,8 @@ public class window implements MouseListener, ActionListener{
     ArrayList<Tile> playerOneHand = new ArrayList<Tile>();
     ArrayList<Tile> playerTwoHand = new ArrayList<Tile>();
     ArrayList<Tile> hold = new ArrayList<Tile>();
+    
+    int[][] tileType = new int[15][15];
     
     Tile[][] boardLetter = new Tile[15][15];
     Tile[][] boardLetterHold = new Tile[15][15];
@@ -278,6 +278,7 @@ public class window implements MouseListener, ActionListener{
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
                 board[i][j].setBackground(myColorSix);
+                tileType[i][j] = 0;
             }
         }
         //line 1
@@ -288,10 +289,15 @@ public class window implements MouseListener, ActionListener{
         board[0][14].setBackground(myColor);
         
         board[0][0].add(tripWord[0]);
-        board[0][3].add(doubLetter[0]);        
+        tileType[0][0] = 1;
+        board[0][3].add(doubLetter[0]);  
+        tileType[0][3] = 2;
         board[0][7].add(tripWord[1]);
+        tileType[0][7] = 1;
         board[0][11].add(doubLetter[1]);
+        tileType[0][11] = 2;
         board[0][14].add(tripWord[2]);
+        tileType[0][14] = 1;
         //line 2
         board[1][1].setBackground(myColorFive);
         board[1][5].setBackground(myColorTwo);
@@ -299,9 +305,13 @@ public class window implements MouseListener, ActionListener{
         board[1][13].setBackground(myColorFive);
         
         board[1][1].add(doubWord[0]);
+        tileType[1][1] = 3;
         board[1][5].add(tripLetter[0]);
+        tileType[1][5] = 4;
         board[1][9].add(tripLetter[1]);
+        tileType[1][9] = 4;
         board[1][13].add(doubWord[1]);
+        tileType[1][13] = 3;
         //line 3
         board[2][2].setBackground(myColorFive);
         board[2][6].setBackground(myColorFour);
@@ -309,9 +319,13 @@ public class window implements MouseListener, ActionListener{
         board[2][12].setBackground(myColorFive);
         
         board[2][2].add(doubWord[2]);
+        tileType[2][2] = 3;
         board[2][6].add(doubLetter[2]);
+        tileType[2][6] = 2;
         board[2][8].add(doubLetter[3]);
+        tileType[2][8] = 2;
         board[2][12].add(doubWord[3]);
+        tileType[2][12] = 3;
         //line 4
         board[3][0].setBackground(myColorFour);
         board[3][3].setBackground(myColorFive);
@@ -320,16 +334,23 @@ public class window implements MouseListener, ActionListener{
         board[3][14].setBackground(myColorFour);
         
         board[3][0].add(doubLetter[4]);
+        tileType[3][0] = 2;
         board[3][3].add(doubWord[4]);
+        tileType[3][3] = 3;
         board[3][7].add(doubLetter[5]);
+        tileType[3][7] = 2;
         board[3][11].add(doubWord[5]);
+        tileType[3][11] = 3;
         board[3][14].add(doubLetter[6]);
+        tileType[3][14] = 2;
         //line 5
         board[4][4].setBackground(myColorFive); 
         board[4][10].setBackground(myColorFive);
         
         board[4][4].add(doubWord[6]);
+        tileType[4][4] = 3;
         board[4][10].add(doubWord[7]);
+        tileType[4][10] = 3;
         //line 6
         board[5][1].setBackground(myColorTwo);
         board[5][5].setBackground(myColorTwo);
@@ -337,9 +358,13 @@ public class window implements MouseListener, ActionListener{
         board[5][13].setBackground(myColorTwo);
         
         board[5][1].add(tripLetter[2]);
+        tileType[5][1] = 4;
         board[5][5].add(tripLetter[3]);
+        tileType[5][5] = 4;
         board[5][9].add(tripLetter[4]);
+        tileType[5][9] = 4;
         board[5][13].add(tripLetter[5]);
+        tileType[5][13] = 4;
         //line 7
         board[6][2].setBackground(myColorFour);
         board[6][6].setBackground(myColorFour);
@@ -347,9 +372,13 @@ public class window implements MouseListener, ActionListener{
         board[6][12].setBackground(myColorFour);
         
         board[6][2].add(doubLetter[7]);
+        tileType[6][2] = 2;
         board[6][6].add(doubLetter[8]);
+        tileType[6][6] = 2;
         board[6][8].add(doubLetter[9]);
+        tileType[6][8] = 2;
         board[6][12].add(doubLetter[10]);
+        tileType[6][12] = 2;
         //line 8
         board[7][0].setBackground(myColor);
         board[7][3].setBackground(myColorFour);
@@ -358,9 +387,13 @@ public class window implements MouseListener, ActionListener{
         board[7][14].setBackground(myColor);
         
         board[7][0].add(tripWord[3]);
+        tileType[7][0] = 1;
         board[7][3].add(doubLetter[11]);
+        tileType[7][3] = 2;
         board[7][11].add(doubLetter[12]);
+        tileType[7][11] = 2;
         board[7][14].add(tripWord[4]);
+        tileType[7][14] = 1;
         //line 9
         board[8][2].setBackground(myColorFour);
         board[8][6].setBackground(myColorFour);
@@ -368,9 +401,13 @@ public class window implements MouseListener, ActionListener{
         board[8][12].setBackground(myColorFour);
         
         board[8][2].add(doubLetter[13]);
+        tileType[8][2] = 2;
         board[8][6].add(doubLetter[14]);
+        tileType[8][6] = 2;
         board[8][8].add(doubLetter[15]);
+        tileType[8][8] = 2;
         board[8][12].add(doubLetter[16]);
+        tileType[8][12] = 2;
         //line 10
         board[9][1].setBackground(myColorTwo);
         board[9][5].setBackground(myColorTwo);
@@ -378,15 +415,21 @@ public class window implements MouseListener, ActionListener{
         board[9][13].setBackground(myColorTwo);
         
         board[9][1].add(tripLetter[6]);
+        tileType[9][1] = 4;
         board[9][5].add(tripLetter[7]);
+        tileType[9][5] = 4;
         board[9][9].add(tripLetter[8]);
+        tileType[9][9] = 4;
         board[9][13].add(tripLetter[9]);
+        tileType[9][13] = 4;
         //line 11 
         board[10][4].setBackground(myColorFive); 
         board[10][10].setBackground(myColorFive);
         
         board[10][4].add(doubWord[8]);
+        tileType[10][4] = 3;
         board[10][10].add(doubWord[9]);
+        tileType[10][10] = 3;
         //line 12
         board[11][0].setBackground(myColorFour);
         board[11][3].setBackground(myColorFive);
@@ -395,10 +438,15 @@ public class window implements MouseListener, ActionListener{
         board[11][14].setBackground(myColorFour);
         
         board[11][0].add(doubLetter[17]);
+        tileType[11][0] = 2;
         board[11][3].add(doubWord[10]);
+        tileType[11][3] = 3;
         board[11][7].add(doubLetter[18]);
+        tileType[11][7] = 2;
         board[11][11].add(doubWord[11]);
+        tileType[11][11] = 3;
         board[11][14].add(doubLetter[19]);
+        tileType[11][14] = 2;
         //line 13
         board[12][2].setBackground(myColorFive);
         board[12][6].setBackground(myColorFour);
@@ -406,9 +454,13 @@ public class window implements MouseListener, ActionListener{
         board[12][12].setBackground(myColorFive);
         
         board[12][2].add(doubWord[12]);
+        tileType[12][2] = 3;
         board[12][6].add(doubLetter[20]);
+        tileType[12][6] = 2;
         board[12][8].add(doubLetter[21]);
+        tileType[12][8] = 2;
         board[12][12].add(doubWord[13]);
+        tileType[12][12] = 3;
         //line 14
         board[13][1].setBackground(myColorFive);
         board[13][5].setBackground(myColorTwo);
@@ -416,9 +468,13 @@ public class window implements MouseListener, ActionListener{
         board[13][13].setBackground(myColorFive);
         
         board[13][1].add(doubWord[14]);
+        tileType[13][1] = 3;
         board[13][5].add(tripLetter[10]);
+        tileType[13][5] = 4;
         board[13][9].add(tripLetter[11]);
+        tileType[13][9] = 4;
         board[13][13].add(doubWord[15]);
+        tileType[13][13] = 3;
         //line 15
         board[14][0].setBackground(myColor);
         board[14][3].setBackground(myColorFour);        
@@ -427,10 +483,15 @@ public class window implements MouseListener, ActionListener{
         board[14][14].setBackground(myColor);
         
         board[14][0].add(tripWord[5]);
+        tileType[14][0] = 1;
         board[14][3].add(doubLetter[22]); 
+        tileType[14][3] = 2;
         board[14][7].add(tripWord[6]);
+        tileType[14][7] = 1;
         board[14][11].add(doubLetter[23]);
+        tileType[14][11] = 2;
         board[14][14].add(tripWord[7]);
+        tileType[14][14] = 1;
         
         //EAST
         eastPanel.add(scoresPanel);
@@ -969,23 +1030,128 @@ public void changeTurn(){
             placedWord = "";
             
             if(downClick){
+                int pOneScoreTemp = 0;
+                int pTwoScoreTemp = 0;
+                int doubX = 0;
+                int tripX = 0;
                 for(int i = 0; i <= (lastX - firstX); i++){
                     if(turnValue == 1){
-                        pOneScore += boardLetterHold[firstX + i][firstY].getPV();
+                        if(tileType[firstX + i][firstY] == 1){
+                            pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
+                            tripX += 1;
+                        }else if(tileType[firstX + i][firstY] == 2){
+                            pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV() * 2;
+                        }else if(tileType[firstX + i][firstY] == 3){
+                            pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
+                            doubX += 1;
+                        }else if(tileType[firstX + i][firstY] == 4){
+                            pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV() * 4;
+                        }else {
+                            pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
+                        }
                     }
                     if(turnValue == 2){
-                        pTwoScore += boardLetterHold[firstX + i][firstY].getPV();
+                        if(tileType[firstX + i][firstY] == 1){
+                            pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
+                            tripX += 1;
+                        }else if(tileType[firstX + i][firstY] == 2){
+                            pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV() * 2;
+                        }else if(tileType[firstX + i][firstY] == 3){
+                            pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
+                            doubX += 1;
+                        }else if(tileType[firstX + i][firstY] == 4){
+                            pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV() * 4;
+                        }else {
+                            pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
+                        }
                     }
                 }
+                
+                if (doubX > 0){
+                    for (int i = 0; i < doubX; i++){
+                        if(turnValue == 1){
+                            pOneScoreTemp *= 2;
+                        }
+                        if(turnValue == 2){
+                            pTwoScoreTemp *= 2;
+                        }
+                    }
+                }
+                if (tripX > 0){
+                    for (int i = 0; i < tripX; i++){
+                        if(turnValue == 1){
+                            pOneScoreTemp *= 3;
+                        }
+                        if(turnValue == 2){
+                            pTwoScoreTemp *= 3;
+                        }
+                    }
+                }
+                
+                pOneScore += pOneScoreTemp;
+                pTwoScore += pTwoScoreTemp;
+                
             }else if(rightClick){
+                int pOneScoreTemp = 0;
+                int pTwoScoreTemp = 0;
+                int doubX = 0;
+                int tripX = 0;
                 for(int i = 0; i <= (lastY - firstY); i++){
                     if(turnValue == 1){
-                        pOneScore += boardLetterHold[firstX][firstY + i].getPV();
+                        if(tileType[firstX][firstY + i] == 1){
+                            pOneScoreTemp += boardLetterHold[firstX][firstY + i].getPV();
+                            tripX += 1;
+                        }else if(tileType[firstX][firstY + i] == 2){
+                            pOneScoreTemp += boardLetterHold[firstX][firstY + i].getPV() * 2;
+                        }else if(tileType[firstX][firstY + i] == 3){
+                            pOneScoreTemp += boardLetterHold[firstX][firstY + i].getPV();
+                            doubX += 1;
+                        }else if(tileType[firstX][firstY + i] == 4){
+                            pOneScoreTemp += boardLetterHold[firstX][firstY + i].getPV() * 4;
+                        }else {
+                            pOneScoreTemp += boardLetterHold[firstX][firstY + i].getPV();
+                        }
                     }
                     if(turnValue == 2){
-                        pTwoScore += boardLetterHold[firstX][firstY + i].getPV();
+                        if(tileType[firstX][firstY + i] == 1){
+                            pTwoScoreTemp += boardLetterHold[firstX][firstY + i].getPV();
+                            tripX += 1;
+                        }else if(tileType[firstX][firstY + i] == 2){
+                            pTwoScoreTemp += boardLetterHold[firstX][firstY + i].getPV() * 2;
+                        }else if(tileType[firstX][firstY + i] == 3){
+                            pTwoScoreTemp += boardLetterHold[firstX][firstY + i].getPV();
+                            doubX += 1;
+                        }else if(tileType[firstX][firstY + i] == 4){
+                            pTwoScoreTemp += boardLetterHold[firstX][firstY + i].getPV() * 4;
+                        }else {
+                            pTwoScoreTemp += boardLetterHold[firstX][firstY + i].getPV();
+                        }
                     }
                 }
+                
+                if (doubX > 0){
+                    for (int i = 0; i < doubX; i++){
+                        if(turnValue == 1){
+                            pOneScoreTemp *= 2;
+                        }
+                        if(turnValue == 2){
+                            pTwoScoreTemp *= 2;
+                        }
+                    }
+                }
+                if (tripX > 0){
+                    for (int i = 0; i < tripX; i++){
+                        if(turnValue == 1){
+                            pOneScoreTemp *= 3;
+                        }
+                        if(turnValue == 2){
+                            pTwoScoreTemp *= 3;
+                        }
+                    }
+                }
+                
+                pOneScore += pOneScoreTemp;
+                pTwoScore += pTwoScoreTemp;
             }
             playerOneNumber.setText("" + pOneScore);
             playerTwoNumber.setText("" + pTwoScore);

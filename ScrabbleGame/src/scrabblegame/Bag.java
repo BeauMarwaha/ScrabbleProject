@@ -39,7 +39,7 @@ public class Bag {
             Tile y = new Tile("Y",4);
             bag.push(y);
             Tile blank = new Tile("*blank*",0);
-            bag.push(y);
+            bag.push(blank);
         }
         for(int i = 0; i < 3; i++){
             Tile g = new Tile("G",2);
@@ -79,7 +79,7 @@ public class Bag {
             
         }
         for(int i = 0; i < 12; i++){
-            Tile e = new Tile("E",12);
+            Tile e = new Tile("E",1);
             bag.push(e);
             
         }

@@ -1123,13 +1123,9 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
-<<<<<<< HEAD
 
             placedWord = "";
 
-=======
-            placedWord = "";
->>>>>>> origin/master
             
             if(downClick){
                 int pOneScoreTemp = 0;

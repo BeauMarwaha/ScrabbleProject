@@ -1076,25 +1076,25 @@ public void changeTurn(){
         int count = 0;
         boolean wordFound = false;
         String word = " ";
-        if (boardLetterHold[firstX - 1][firstY] != null){
-            firstX -= 1;
-        }
-        if (boardLetterHold[lastX + 1][lastY] != null){
-            lastX += 1;
-        }
-        if (boardLetterHold[firstX][firstY - 1] != null){
-            firstY -= 1;
-        }
-        if (boardLetterHold[lastX][lastY + 1] != null){
-            lastY += 1;
-        }
         if(downClick){
+            if (boardLetterHold[firstX - 1][firstY] != null){
+                firstX -= 1;
+            }
+            if (boardLetterHold[lastX + 1][lastY] != null){
+                lastX += 1;
+            }
             for(int i = 0; i <= (lastX - firstX); i++){
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
                 System.out.println(placedWord);
             }
         }else if(rightClick){
+            if (boardLetterHold[firstX][firstY - 1] != null){
+                firstY -= 1;
+            }
+            if (boardLetterHold[lastX][lastY + 1] != null){
+                lastY += 1;
+            }
             for(int i = 0; i <= (lastY - firstY); i++){
                 placedWord += boardLetterHold[firstX ][firstY + i].getLetter();
                 System.out.println("WORD");
@@ -1122,10 +1122,6 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
             placedWord = "";
 
             

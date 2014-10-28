@@ -1082,8 +1082,9 @@ public void changeTurn(){
         boolean wordFound = false;
         String word = " ";
         
+        
         if(downClick){
-            
+            //firstX - 1 lastx + 1
             for(int i = 0; i <= (lastX - firstX); i++){
                 
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
@@ -1118,10 +1119,7 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
             placedWord = "";
 
             

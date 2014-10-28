@@ -971,11 +971,6 @@ public class window implements MouseListener, ActionListener{
                         
                             }
                         }
-//                    System.out.println("Cord");
-//                    System.out.println("X " + (lastX));
-//                    System.out.println("Y " + (lastY));
-//                    System.out.println("X " + (lastX + 2));
-//                    System.out.println("Y " + (lastY  + 2));
                     }
                     
                 }
@@ -1081,17 +1076,32 @@ public void changeTurn(){
         int count = 0;
         boolean wordFound = false;
         String word = " ";
+<<<<<<< HEAD
         
         
         if(downClick){
             //firstX - 1 lastx + 1
+=======
+        if(downClick){
+            if (boardLetterHold[firstX - 1][firstY] != null){
+                firstX -= 1;
+            }
+            if (boardLetterHold[lastX + 1][lastY] != null){
+                lastX += 1;
+            }
+>>>>>>> origin/master
             for(int i = 0; i <= (lastX - firstX); i++){
-                
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
                 System.out.println(placedWord);
             }
         }else if(rightClick){
+            if (boardLetterHold[firstX][firstY - 1] != null){
+                firstY -= 1;
+            }
+            if (boardLetterHold[lastX][lastY + 1] != null){
+                lastY += 1;
+            }
             for(int i = 0; i <= (lastY - firstY); i++){
                 placedWord += boardLetterHold[firstX ][firstY + i].getLetter();
                 System.out.println("WORD");
@@ -1119,7 +1129,10 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
             placedWord = "";
 
             
@@ -1139,7 +1152,7 @@ public void changeTurn(){
                             pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
                             doubX += 1;
                         }else if(tileType[firstX + i][firstY] == 4){
-                            pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV() * 4;
+                            pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV() * 3;
                         }else {
                             pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
                         }
@@ -1154,7 +1167,7 @@ public void changeTurn(){
                             pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
                             doubX += 1;
                         }else if(tileType[firstX + i][firstY] == 4){
-                            pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV() * 4;
+                            pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV() * 3;
                         }else {
                             pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
                         }

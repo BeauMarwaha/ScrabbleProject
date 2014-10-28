@@ -194,9 +194,10 @@ public class window implements MouseListener, ActionListener{
         window.setVisible(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
-        Dimension screen = Toolkit.getDefaultToolkit ().getScreenSize ();
-        Dimension frameSize = new Dimension (1032, 745);
-        window.setBounds ( screen.width / 2 - frameSize.width / 2, screen.height / 2 - frameSize.height / 2,frameSize.width, frameSize.height );
+        window.setExtendedState(window.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+//        Dimension screen = Toolkit.getDefaultToolkit ().getScreenSize ();
+//        Dimension frameSize = new Dimension (1032, 745);
+//        window.setBounds ( screen.width / 2 - frameSize.width / 2, screen.height / 2 - frameSize.height / 2,frameSize.width, frameSize.height );
         window.add(BorderLayout.CENTER, centerPanel);
         window.add(BorderLayout.SOUTH, southPanel);
         window.add(BorderLayout.EAST, eastPanel);
@@ -585,7 +586,16 @@ public class window implements MouseListener, ActionListener{
         }
          
         if(e.getSource() == buttons[1]){
+<<<<<<< HEAD
             
+=======
+            System.out.println(placedWord);
+            if(downClick || downSkip){
+                board[lastX+1][lastY].setBackground(colorHold);
+            }else if(rightClick || rightSkip){
+                board[lastX][lastY+1].setBackground(colorHold);
+            }
+>>>>>>> origin/master
             
             if (checkTurnOne()){
                 try {
@@ -1088,7 +1098,10 @@ public void changeTurn(){
         int count = 0;
         boolean wordFound = false;
         String word = " ";
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
         if(downClick){
             if (boardLetterHold[firstX - 1][firstY] != null){
                 firstX -= 1;
@@ -1096,7 +1109,10 @@ public void changeTurn(){
             if (boardLetterHold[lastX + 1][lastY] != null){
                 lastX += 1;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
             for(int i = 0; i <= (lastX - firstX); i++){
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
@@ -1136,7 +1152,10 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
             placedWord = "";
 
             

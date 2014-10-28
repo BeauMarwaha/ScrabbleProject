@@ -1122,6 +1122,10 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/master
             placedWord = "";
 
             

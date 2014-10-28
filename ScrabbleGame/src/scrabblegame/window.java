@@ -563,10 +563,11 @@ public class window implements MouseListener, ActionListener{
                 if(turnValue == 1 && !playerOneHand.get(i).getButton().isEnabled()){
                      playerOneHand.get(i).getButton().setEnabled(true);
                      clickLetter = false;
+                     System.out.println("UNCLICKED");
                  }else if(turnValue == 1 && (exchange ||!clickLetter) && playerOneHand.get(i).getButton().isEnabled()){
                      playerOneHand.get(i).getButton().setEnabled(false);
                      clickLetter =true;
-                     
+                     System.out.println("CLICKED");
                  }
             }
         }
@@ -584,12 +585,7 @@ public class window implements MouseListener, ActionListener{
         }
          
         if(e.getSource() == buttons[1]){
-            System.out.println(placedWord);
-            if(downClick){
-                board[lastX+1][lastY].setBackground(colorHold);
-            }else if(rightClick){
-                board[lastX][lastY+1].setBackground(colorHold);
-            }
+            
             
             if (checkTurnOne()){
                 try {
@@ -597,6 +593,14 @@ public class window implements MouseListener, ActionListener{
                 } catch (IOException ex) {
                     Logger.getLogger(window.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+            System.out.println(placedWord);
+            if(downClick || downSkip){
+                board[lastX+1][lastY].setBackground(colorHold);
+                System.out.println("HHHHHH");
+            }else if(rightClick || rightSkip){
+                board[lastX][lastY+1].setBackground(colorHold);
+                System.out.println("HHHHHH");
             }
             firstClick = 0;
             downClick = false;
@@ -816,9 +820,9 @@ public class window implements MouseListener, ActionListener{
                                         firstClick = 2;
                                         board[i][j].setBackground(colorHold);
                                         board[i+1][j-2].setBackground(colorHoldExtra);
-                                    }else if(downClick){
+                                    }else if(downClick || downSkip){
                                         board[i][j].setBackground(colorHold);
-                                    }else if(rightClick){
+                                    }else if(rightClick || rightSkip){
                                         board[i][j].setBackground(colorHold);
                                     }
                                     
@@ -997,6 +1001,7 @@ public class window implements MouseListener, ActionListener{
     public void mouseExited(MouseEvent e) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
+   
 public void changeTurn(){
         
         if(turnValue == 2){
@@ -1012,6 +1017,9 @@ public void changeTurn(){
             }
             theBag.shuffleBag();
             southPanel.removeAll();
+            for(int i = 0; i < playerTwoHand.size(); i++){
+                playerTwoHand.get(i).getButton().removeMouseListener(this);
+            }
             for(int i = 0; i < 7; i++){
                 playerTwoHand.add(theBag.getBag().pop());
 //                southPanel.add(playerTwoHand.get(i).getButton());
@@ -1027,6 +1035,7 @@ public void changeTurn(){
                 turnValue = 1;
                 turnNumber.setText("" + turnValue);
                 exchange = false;
+                System.out.println("ADDED");
             }
             
         }else{
@@ -1042,6 +1051,9 @@ public void changeTurn(){
             }
             theBag.shuffleBag();
             southPanel.removeAll();
+            for(int i = 0; i < playerOneHand.size(); i++){
+                playerOneHand.get(i).getButton().removeMouseListener(this);
+            }
             for(int i = 0; i < 7; i++){
                 playerOneHand.add(theBag.getBag().pop());
 //                southPanel.add(playerOneHand.get(i).getButton());
@@ -1076,12 +1088,7 @@ public void changeTurn(){
         int count = 0;
         boolean wordFound = false;
         String word = " ";
-<<<<<<< HEAD
-        
-        
-        if(downClick){
-            //firstX - 1 lastx + 1
-=======
+
         if(downClick){
             if (boardLetterHold[firstX - 1][firstY] != null){
                 firstX -= 1;
@@ -1089,7 +1096,7 @@ public void changeTurn(){
             if (boardLetterHold[lastX + 1][lastY] != null){
                 lastX += 1;
             }
->>>>>>> origin/master
+
             for(int i = 0; i <= (lastX - firstX); i++){
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
@@ -1129,10 +1136,7 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
             placedWord = "";
 
             
@@ -1292,7 +1296,11 @@ public void changeTurn(){
                        //if()
                         System.out.println("Found Letter");
                         boardLetterHold[i][j] = boardLetter[i][j];
-                        board[i][j].removeAll();
+                        try{
+                            board[i][j].remove(1);
+                        }catch(ArrayIndexOutOfBoundsException e){
+                            board[i][j].remove(0);
+                        }
                     }
                     board[i][j].updateUI();
                  }

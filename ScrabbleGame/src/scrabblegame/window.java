@@ -187,7 +187,7 @@ public class window implements MouseListener, ActionListener{
     ArrayList<Tile> hold = new ArrayList<Tile>();
     
     int[][] tileType = new int[15][15];
-    
+    int[][] wordsConnected= new int[15][15];
     Tile[][] boardLetter = new Tile[15][15];
     Tile[][] boardLetterHold = new Tile[15][15];
     public window(){
@@ -586,17 +586,7 @@ public class window implements MouseListener, ActionListener{
         }
          
         if(e.getSource() == buttons[1]){
-<<<<<<< HEAD
-            
-=======
-            System.out.println(placedWord);
-            if(downClick || downSkip){
-                board[lastX+1][lastY].setBackground(colorHold);
-            }else if(rightClick || rightSkip){
-                board[lastX][lastY+1].setBackground(colorHold);
-            }
->>>>>>> origin/master
-            
+
             if (checkTurnOne()){
                 try {
                     checkWord();
@@ -1045,6 +1035,7 @@ public void changeTurn(){
                 turnValue = 1;
                 turnNumber.setText("" + turnValue);
                 exchange = false;
+                clickLetter = false;
                 System.out.println("ADDED");
             }
             
@@ -1078,6 +1069,7 @@ public void changeTurn(){
                 turnValue = 2;
                 turnNumber.setText("" + turnValue);
                 exchange = false;
+                clickLetter = false;
             }
             
         }
@@ -1098,10 +1090,7 @@ public void changeTurn(){
         int count = 0;
         boolean wordFound = false;
         String word = " ";
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
         if(downClick){
             if (boardLetterHold[firstX - 1][firstY] != null){
                 firstX -= 1;
@@ -1109,10 +1098,7 @@ public void changeTurn(){
             if (boardLetterHold[lastX + 1][lastY] != null){
                 lastX += 1;
             }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
             for(int i = 0; i <= (lastX - firstX); i++){
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
@@ -1152,10 +1138,7 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
             placedWord = "";
 
             

@@ -748,49 +748,49 @@ public class window implements MouseListener, ActionListener{
                                 
                                 if (firstClick == 0){
                                     firstClick = 1;
-                                    if(boardLetter[i][j+1] != null){
+                                    if(j<13 && boardLetter[i][j+1] != null ){
                                         colorHold = board[i][j+2].getBackground();
                                         board[i][j+2].setBackground(Color.YELLOW);
                                         rightSkip = true;
-                                    }else{
+                                    }else if(j<14 && boardLetter[i][j+1] == null  ){
                                         colorHold = board[i][j+1].getBackground();
                                         board[i][j+1].setBackground(Color.YELLOW);
                                     }
-                                    if(boardLetter[i][j] != null){
+                                    if(i<13 && boardLetter[i+1][j] != null ){
                                         colorHoldExtra = board[i+2][j].getBackground();
                                         board[i+2][j].setBackground(Color.YELLOW);
                                         downSkip = true;
-                                    }else{
+                                    }else if( i < 13 && boardLetter[i+1][j] == null ){
                                         colorHoldExtra = board[i+1][j].getBackground();
                                         board[i+1][j].setBackground(Color.YELLOW);
                                     }
 
                                     
                                 }else if(downClick && (holdX+1 == i && holdY == j) && worked){
-                                    if(boardLetter[i+1][j] != null){
+                                    if(i<13 && boardLetter[i+1][j] != null){
                                             colorHold = board[i+2][j].getBackground();
                                             board[i+2][j].setBackground(Color.YELLOW);
                                             downSkip = true;
-                                        }else{
+                                        }else if(i<14 && boardLetter[i+1][j] == null){
                                             colorHold = board[i+1][j].getBackground();
                                             board[i+1][j].setBackground(Color.YELLOW);
                                         } 
                                     worked = false;
                                 }else if(rightClick && (holdY+1 == j && holdX == i) && worked){
-                                    if(boardLetter[i][j+1] != null){
+                                    if(j<13 && boardLetter[i][j+1] != null){
                                             colorHold = board[i][j+2].getBackground();
                                             board[i][j+2].setBackground(Color.YELLOW);
                                             rightSkip = true;
-                                        }else{
+                                        }else if(j<14 && boardLetter[i][j+1] == null) {
                                             colorHold = board[i][j+1].getBackground();
                                             board[i][j+1].setBackground(Color.YELLOW);
                                         }
                                     worked = false;
-                                }else if(downSkip && worked){
+                                }else if(i < 13 && downSkip && worked && boardLetter[i+1][j] != null){
                                     colorHold = board[i+1][j].getBackground();
                                     board[i+1][j].setBackground(Color.YELLOW);
                                     worked = false;
-                                }else if(rightSkip&& worked){
+                                }else if(i < 13 && rightSkip&& worked && boardLetter[i][j+1] != null){
                                     colorHold = board[i][j+1].getBackground();
                                     board[i][j+1].setBackground(Color.YELLOW);
                                     worked = false;
@@ -922,55 +922,57 @@ public class window implements MouseListener, ActionListener{
                                 
                                 if (firstClick == 0){
                                     firstClick = 1;
-                                    if(boardLetterHold[i][j+1] != null){
+                                    if(j<13 && boardLetter[i][j+1] != null ){
                                         colorHold = board[i][j+2].getBackground();
                                         board[i][j+2].setBackground(Color.YELLOW);
                                         rightSkip = true;
-                                    }else{
+                                    }else if(j<14 && boardLetter[i][j+1] == null  ){
                                         colorHold = board[i][j+1].getBackground();
                                         board[i][j+1].setBackground(Color.YELLOW);
                                     }
-                                    if(boardLetterHold[i+1][j] != null){
+                                    if(i<13 && boardLetter[i+1][j] != null ){
                                         colorHoldExtra = board[i+2][j].getBackground();
                                         board[i+2][j].setBackground(Color.YELLOW);
                                         downSkip = true;
-                                    }else{
+                                    }else if( i < 13 && boardLetter[i+1][j] == null ){
                                         colorHoldExtra = board[i+1][j].getBackground();
                                         board[i+1][j].setBackground(Color.YELLOW);
                                     }
 
                                     
                                 }else if(downClick && (holdX+1 == i && holdY == j) && worked){
-                                    if(boardLetter[i+1][j] != null){
+                                    if(i<13 && boardLetter[i+1][j] != null){
                                             colorHold = board[i+2][j].getBackground();
                                             board[i+2][j].setBackground(Color.YELLOW);
                                             downSkip = true;
-                                        }else{
+                                        }else if(i<14 && boardLetter[i+1][j] == null){
                                             colorHold = board[i+1][j].getBackground();
                                             board[i+1][j].setBackground(Color.YELLOW);
                                         } 
                                     worked = false;
                                 }else if(rightClick && (holdY+1 == j && holdX == i) && worked){
-                                    if(boardLetter[i][j+1] != null){
+                                    if(j<13 && boardLetter[i][j+1] != null){
                                             colorHold = board[i][j+2].getBackground();
                                             board[i][j+2].setBackground(Color.YELLOW);
                                             rightSkip = true;
-                                        }else{
+                                        }else if(j<14 && boardLetter[i][j+1] == null) {
                                             colorHold = board[i][j+1].getBackground();
                                             board[i][j+1].setBackground(Color.YELLOW);
                                         }
                                     worked = false;
-                                }else if(downSkip && worked){
+                                }else if(i < 13 && downSkip && worked && boardLetter[i+1][j] != null){
                                     colorHold = board[i+1][j].getBackground();
                                     board[i+1][j].setBackground(Color.YELLOW);
                                     worked = false;
-                                }else if(rightSkip&& worked){
+                                }else if(i < 13 && rightSkip&& worked && boardLetter[i][j+1] != null){
                                     colorHold = board[i][j+1].getBackground();
                                     board[i][j+1].setBackground(Color.YELLOW);
                                     worked = false;
                                 }
                                 
                             }
+                                
+                            
                         }
                         
                             }
@@ -1092,10 +1094,10 @@ public void changeTurn(){
         String word = " ";
 
         if(downClick){
-            if (boardLetterHold[firstX - 1][firstY] != null){
+            if (firstX > 0 &&boardLetterHold[firstX - 1][firstY] != null){
                 firstX -= 1;
             }
-            if (boardLetterHold[lastX + 1][lastY] != null){
+            if (lastX < 14 &&boardLetterHold[lastX + 1][lastY] != null){
                 lastX += 1;
             }
 
@@ -1105,10 +1107,10 @@ public void changeTurn(){
                 System.out.println(placedWord);
             }
         }else if(rightClick){
-            if (boardLetterHold[firstX][firstY - 1] != null){
+            if (firstY > 0 && boardLetterHold[firstX][firstY - 1] != null){
                 firstY -= 1;
             }
-            if (boardLetterHold[lastX][lastY + 1] != null){
+            if (lastY < 14 &&boardLetterHold[lastX][lastY + 1] != null){
                 lastY += 1;
             }
             for(int i = 0; i <= (lastY - firstY); i++){

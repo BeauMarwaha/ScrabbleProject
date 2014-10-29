@@ -65,7 +65,7 @@ public class window implements MouseListener, ActionListener{
     JMenuItem themeGF = new JMenuItem("Good Friends");
     JMenuItem themeNRM = new JMenuItem("Newly Risen Moon");
     JMenuItem themeE = new JMenuItem("Entrapped");
-    JMenuItem themeSIFY = new JMenuItem("She Is French, Yes?");
+    JMenuItem themeSIFY = new JMenuItem("She Is French, Oui?");
     JMenuItem themeON = new JMenuItem("Omega Nebula");
     JMenuItem themeV = new JMenuItem("Volcanic");
     JMenuItem themeC = new JMenuItem("Classical");
@@ -586,17 +586,12 @@ public class window implements MouseListener, ActionListener{
         }
          
         if(e.getSource() == buttons[1]){
-<<<<<<< HEAD
-            
-=======
             System.out.println(placedWord);
             if(downClick || downSkip){
                 board[lastX+1][lastY].setBackground(colorHold);
             }else if(rightClick || rightSkip){
                 board[lastX][lastY+1].setBackground(colorHold);
             }
->>>>>>> origin/master
-            
             if (checkTurnOne()){
                 try {
                     checkWord();
@@ -1098,10 +1093,6 @@ public void changeTurn(){
         int count = 0;
         boolean wordFound = false;
         String word = " ";
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
         if(downClick){
             if (boardLetterHold[firstX - 1][firstY] != null){
                 firstX -= 1;
@@ -1109,10 +1100,6 @@ public void changeTurn(){
             if (boardLetterHold[lastX + 1][lastY] != null){
                 lastX += 1;
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
             for(int i = 0; i <= (lastX - firstX); i++){
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
@@ -1152,13 +1139,7 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
             placedWord = "";
-
-            
             if(downClick){
                 int pOneScoreTemp = 0;
                 int pTwoScoreTemp = 0;

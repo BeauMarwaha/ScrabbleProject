@@ -185,9 +185,10 @@ public class window implements MouseListener, ActionListener{
     ArrayList<Tile> playerOneHand = new ArrayList<Tile>();
     ArrayList<Tile> playerTwoHand = new ArrayList<Tile>();
     ArrayList<Tile> hold = new ArrayList<Tile>();
-    
+    boolean firstTurn = true;
     int[][] tileType = new int[15][15];
     int[][] wordsConnected= new int[15][15];
+    int[][] wordsConnectedHold= new int[15][15];
     Tile[][] boardLetter = new Tile[15][15];
     Tile[][] boardLetterHold = new Tile[15][15];
     public window(){
@@ -253,6 +254,8 @@ public class window implements MouseListener, ActionListener{
                 board[i][j] = new JPanel();
                 centerPanel.add(board[i][j]);
                 board[i][j].addMouseListener(this);
+                wordsConnected[i][j] = 0;
+                wordsConnectedHold[i][j] = 0;
             }
         }
         
@@ -609,7 +612,6 @@ public class window implements MouseListener, ActionListener{
             lastY = 0;
             holdY = 0;
             holdX = 0;
-            
         }
         
         if(e.getSource() == buttons[2]){
@@ -629,6 +631,7 @@ public class window implements MouseListener, ActionListener{
                     if(turnValue == 1){
                         for(int k = 0; k < playerOneHand.size(); k++){
                             if(!playerOneHand.get(k).getButton().isEnabled()){
+                                if(wordsConnectedHold[i][j] == 1 || firstTurn){
                                 if(board[i][j].getBackground().equals(Color.YELLOW)){
                                     if(firstClick == 1 && (lastX+1 == i && lastY == j)){
                                         firstClick = 2;
@@ -653,7 +656,7 @@ public class window implements MouseListener, ActionListener{
                                     }
                                     
                                 }
-
+                                
                                 if(firstClick == 2){
                                     if(lastX+1 == i && lastY == j && !rightClick){
                                         System.out.println("Down");
@@ -795,14 +798,16 @@ public class window implements MouseListener, ActionListener{
                                     board[i][j+1].setBackground(Color.YELLOW);
                                     worked = false;
                                 }
-                                
+                            }
                             }
                         }
-                        
+                        wordConnect();
+                        firstTurn = false;
                     }else{
                         for(int k = 0; k < 7; k++){
                             for(int l = 0; l < playerTwoHand.size(); l++){
                             if(!playerTwoHand.get(l).getButton().isEnabled()){
+                                if(wordsConnectedHold[i][j] == 1 || firstTurn){
                                 if(board[i][j].getBackground().equals(Color.YELLOW)){
                                     if(firstClick == 1 && (lastX+1 == i && lastY == j)){
                                         firstClick = 2;
@@ -827,6 +832,7 @@ public class window implements MouseListener, ActionListener{
                                     }
                                     
                                 }
+                                
                                 if(firstClick == 2){
                                     if((lastX+1 == i && lastY == j && !rightClick ) ){
                                         System.out.println("Down");
@@ -969,13 +975,15 @@ public class window implements MouseListener, ActionListener{
                                     board[i][j+1].setBackground(Color.YELLOW);
                                     worked = false;
                                 }
-                                
+                            }
                             }
                                 
                             
                         }
                         
                             }
+                        wordConnect();
+                        firstTurn = false;
                         }
                     }
                     
@@ -1138,6 +1146,7 @@ public void changeTurn(){
             for(int i = 0; i < 15; i++){
                 for(int j = 0; j < 15; j++){
                     boardLetter[i][j] = boardLetterHold[i][j];
+                    wordsConnected[i][j] = wordsConnectedHold[i][j];
                  }
             }
 
@@ -1306,6 +1315,7 @@ public void changeTurn(){
                             board[i][j].remove(0);
                         }
                     }
+                    wordsConnected[i][j] = wordsConnectedHold[i][j];
                     board[i][j].updateUI();
                  }
             }
@@ -1350,6 +1360,42 @@ public void changeTurn(){
         }else{
             System.out.println("True");
             return true;
+        }
+    }
+    public void wordConnect(){
+        int holdNum = 0;
+        for(int i = 0; i < 15; i++){
+            for(int j = 0; j < 15; j++){
+                if(boardLetterHold[i][j] != null){
+                    wordsConnectedHold[i][j] = 4;
+                }else{
+
+                    if( j<14 &&boardLetterHold[i][j+1] != null){
+                        holdNum+=1;
+                        //wordsConnectedHold[i][j+1] += 1;
+                    }
+                    if(j>0 && boardLetterHold[i][j-1] != null){
+                        holdNum+=1;
+                        //wordsConnectedHold[i][j-1] += 1;
+                    }
+                    if(i<14 && boardLetterHold[i+1][j] != null){
+                        holdNum+=1;
+                        //wordsConnectedHold[i+1][j] += 1;
+                    }
+                    if(i>0 && boardLetterHold[i-1][j] != null){
+                        holdNum+=1;
+                       // wordsConnectedHold[i-1][j] += 1;
+                    }
+                    wordsConnectedHold[i][j] = holdNum;
+                    holdNum = 0;
+                }
+            }
+        }
+        for(int i = 0; i < 15; i++){
+            System.out.println("");
+            for(int j = 0; j < 15; j++){
+                System.out.print(wordsConnectedHold[i][j] + " ");
+            }
         }
     }
 

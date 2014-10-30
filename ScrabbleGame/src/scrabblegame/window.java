@@ -18,6 +18,8 @@ public class window implements MouseListener, ActionListener{
     int holdX;
     int holdY;
     
+    boolean first = true;
+    
     int lastX;
     int lastY;
     int firstClick = 0;
@@ -34,8 +36,7 @@ public class window implements MouseListener, ActionListener{
     JLabel[] emptyLabels = new JLabel[3];
     JPanel scoresPanel = new JPanel(new GridLayout(6,1));
     JPanel[][] board = new JPanel[15][15];
-    JButton[] buttons = new JButton[3];
-    JButton[] hand = new JButton[0];
+    JButton[] buttons = new JButton[4];
     JLabel turn = new JLabel("Whose Turn: ");
     JLabel playerOne = new JLabel("Player One Score: ");
     JLabel playerTwo = new JLabel("Player Two Score: ");
@@ -180,6 +181,8 @@ public class window implements MouseListener, ActionListener{
     boolean clickLetter = false;
     boolean turnOne = true;
     String placedWord = "";
+    
+    int skips = 0;
     
     Color colorHold;
     Color colorHoldExtra;
@@ -515,6 +518,10 @@ public class window implements MouseListener, ActionListener{
         buttons[1].setText("End Turn");
         buttonsPanel.setBackground(myColorThree);
         
+        buttons[3] = new JButton();
+        buttons[3].addMouseListener(this);
+        buttons[3].setText("Skip Turn");
+        
         turn.setPreferredSize(new Dimension(75,50));
         scoresPanel.add(turn);
         scoresPanel.add(turnNumber);
@@ -552,6 +559,43 @@ public class window implements MouseListener, ActionListener{
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if(e.getSource() == buttons[3]){
+            changeTurn();
+            skips += 1;
+            System.out.println(skips);
+            if (skips == 2){
+                if (pOneScore > pTwoScore){
+                    JOptionPane.showMessageDialog(null, "Player One Wins! \n Final Score: " + pOneScore + " to " + pTwoScore + ".");
+                    if (JOptionPane.showConfirmDialog(null, "Start A New Game?") == 0){
+                        window.dispose();
+                        window g = new window();
+                    }else{
+                        System.exit(0);
+                    }
+                }
+                
+                if (pTwoScore > pOneScore){
+                    JOptionPane.showMessageDialog(null, "Player Two Wins! \n Final Score: " + pTwoScore + " to " + pOneScore + ".");
+                    if (JOptionPane.showConfirmDialog(null, "Start A New Game?") == 0){
+                        window.dispose();
+                        window g = new window();
+                    }else{
+                        System.exit(0);
+                    }
+                }
+                
+                if (pTwoScore == pOneScore){
+                    JOptionPane.showMessageDialog(null, "It's A Tie! \n Final Score: " + pTwoScore + " to " + pOneScore + ".");
+                    if (JOptionPane.showConfirmDialog(null, "Start A New Game?") == 0){
+                        window.dispose();
+                        window g = new window();
+                    }else{
+                        System.exit(0);
+                    }
+                }
+            }
+        }
+        
         if(e.getSource() == buttons[0] && buttons[0].isEnabled()){
             
             JOptionPane.showMessageDialog(centerPanel, "Click on all of the tiles you would like to exchange");
@@ -1147,6 +1191,11 @@ public void changeTurn(){
             System.out.print(playerTwoHand.get(i).getLetter());
         }
         hold.clear();
+        if(theBag.getBag().isEmpty() && first){
+            buttonsPanel.remove(3);
+            buttonsPanel.add(buttons[3]);
+            first = false;
+        }
     }
     
     public void checkWord()throws IOException, FileNotFoundException {
@@ -1193,6 +1242,7 @@ public void changeTurn(){
             
         }
         if(wordFound){
+            skips = 0;
             System.out.println("Found");
             for(int i = 0; i < 15; i++){
                 for(int j = 0; j < 15; j++){

@@ -627,15 +627,6 @@ public class window implements MouseListener, ActionListener{
          
         if(e.getSource() == buttons[1]){
             System.out.println(placedWord);
-<<<<<<< HEAD
-            if(downClick || downSkip){
-                board[lastX+1][lastY].setBackground(colorHold);
-            }else if(rightClick || rightSkip){
-                board[lastX][lastY+1].setBackground(colorHold);
-            }
-
-=======
->>>>>>> origin/master
             if (checkTurnOne()){
                 try {
                     checkWord();
@@ -1162,22 +1153,13 @@ public void changeTurn(){
         int count = 0;
         boolean wordFound = false;
         String word = " ";
-<<<<<<< HEAD
-
         if(downClick || boardLetterHold[firstX - 1][firstY] != null || boardLetterHold[lastX + 1][lastY] != null){
-=======
-        if(downClick){
->>>>>>> origin/master
             if (firstX > 0 &&boardLetterHold[firstX - 1][firstY] != null){
                 firstX -= 1;
             }
             if (lastX < 14 &&boardLetterHold[lastX + 1][lastY] != null){
                 lastX += 1;
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
             for(int i = 0; i <= (lastX - firstX); i++){
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
@@ -1218,10 +1200,6 @@ public void changeTurn(){
                     wordsConnected[i][j] = wordsConnectedHold[i][j];
                  }
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
             placedWord = "";
             if(downClick){
                 int pOneScoreTemp = 0;

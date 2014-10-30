@@ -70,6 +70,8 @@ public class window implements MouseListener, ActionListener{
     JMenuItem themeV = new JMenuItem("Volcanic");
     JMenuItem themeC = new JMenuItem("Classical");
     
+    String[] letterWords = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+    
     //Default Color Scheme
     //triple word box color
     Color myColor = new Color(200,0,0); 
@@ -558,9 +560,26 @@ public class window implements MouseListener, ActionListener{
             exchange = true;
             buttons[0].setEnabled(false);
         }
-        
-         for(int i = 0; i < playerOneHand.size(); i++){
+        for(int i = 0; i < playerOneHand.size(); i++){
             if(e.getSource() == playerOneHand.get(i).getButton() ){
+                if(playerOneHand.get(i).getLetter().equals("*blank*")){
+                    boolean works = false;
+                    String x = null;
+                    while(!works){
+                        x = JOptionPane.showInputDialog(null, "Type in the letter you want to pick:");
+                        for(int j = 0; j < 26; j++){
+                            if(x.equalsIgnoreCase(letterWords[j])){
+                                works = true;
+                            }
+                        }
+                        if(!works){
+                            JOptionPane.showMessageDialog(null, "Letter not found, try again");
+                        }
+                    }
+                    if(works){
+                        playerOneHand.get(i).setBlank(x);
+                    }
+                }
                 if(turnValue == 1 && !playerOneHand.get(i).getButton().isEnabled()){
                      playerOneHand.get(i).getButton().setEnabled(true);
                      clickLetter = false;
@@ -574,6 +593,24 @@ public class window implements MouseListener, ActionListener{
         }
         for(int i = 0; i < playerTwoHand.size(); i++){
             if(e.getSource() == playerTwoHand.get(i).getButton() ){
+                if(playerTwoHand.get(i).getLetter().equals("*blank*")){
+                    boolean works = false;
+                    String x = null;
+                    while(!works){
+                        x = JOptionPane.showInputDialog(null, "Type in the letter you want to pick:");
+                        for(int j = 0; j < 26; j++){
+                            if(x.equalsIgnoreCase(letterWords[j])){
+                                works = true;
+                            }
+                        }
+                        if(!works){
+                            JOptionPane.showMessageDialog(null, "Letter not found, try again");
+                        }
+                    }
+                    if(works){
+                        playerTwoHand.get(i).setBlank(x);
+                    }
+                }
                 if(turnValue == 2 && !playerTwoHand.get(i).getButton().isEnabled()){
                      playerTwoHand.get(i).getButton().setEnabled(true);
                      clickLetter = false;
@@ -586,16 +623,7 @@ public class window implements MouseListener, ActionListener{
         }
          
         if(e.getSource() == buttons[1]){
-<<<<<<< HEAD
             System.out.println(placedWord);
-            if(downClick || downSkip){
-                board[lastX+1][lastY].setBackground(colorHold);
-            }else if(rightClick || rightSkip){
-                board[lastX][lastY+1].setBackground(colorHold);
-            }
-=======
-
->>>>>>> origin/master
             if (checkTurnOne()){
                 try {
                     checkWord();
@@ -604,12 +632,10 @@ public class window implements MouseListener, ActionListener{
                 }
             }
             System.out.println(placedWord);
-            if(downClick || downSkip){
+            if(lastX < 14 && (downClick || downSkip)){
                 board[lastX+1][lastY].setBackground(colorHold);
-                System.out.println("HHHHHH");
-            }else if(rightClick || rightSkip){
+            }else if(lastY < 14 && (rightClick || rightSkip)){
                 board[lastX][lastY+1].setBackground(colorHold);
-                System.out.println("HHHHHH");
             }
             firstClick = 0;
             downClick = false;
@@ -642,19 +668,28 @@ public class window implements MouseListener, ActionListener{
                                     if(firstClick == 1 && (lastX+1 == i && lastY == j)){
                                         firstClick = 2;
                                         board[i][j].setBackground(colorHoldExtra);
-                                        board[i-1][j+1].setBackground(colorHold);
+                                        if(j < 14 && i > 0){
+                                            board[i-1][j+1].setBackground(colorHold);
+                                        }
+                                        
                                     }else if(firstClick == 1 && (lastY+1 == j && lastX == i)){
                                         firstClick = 2;
                                         board[i][j].setBackground(colorHold);
-                                        board[i+1][j-1].setBackground(colorHoldExtra);
+                                        if(i < 14 && j > 0){
+                                            board[i+1][j-1].setBackground(colorHoldExtra);
+                                        }
                                     }else if(firstClick == 1 && downSkip){
                                         firstClick = 2;
                                         board[i][j].setBackground(colorHoldExtra);
-                                        board[i-2][j+1].setBackground(colorHold);
+                                        if(j < 14 && i > 1){
+                                            board[i-2][j+1].setBackground(colorHold);
+                                        }
                                     }else if(firstClick == 1 && rightSkip){
                                         firstClick = 2;
                                         board[i][j].setBackground(colorHold);
-                                        board[i+1][j-2].setBackground(colorHoldExtra);
+                                        if(i < 14 && j > 1){
+                                            board[i+1][j-2].setBackground(colorHoldExtra);
+                                        }
                                     }else if(downClick || downSkip){
                                         board[i][j].setBackground(colorHold);
                                     }else if(rightClick || rightSkip){
@@ -816,19 +851,28 @@ public class window implements MouseListener, ActionListener{
                                     if(firstClick == 1 && (lastX+1 == i && lastY == j)){
                                         firstClick = 2;
                                         board[i][j].setBackground(colorHoldExtra);
-                                        board[i-1][j+1].setBackground(colorHold);
+                                        if(j < 14 && i > 0){
+                                            board[i-1][j+1].setBackground(colorHold);
+                                        }
+                                        
                                     }else if(firstClick == 1 && (lastY+1 == j && lastX == i)){
                                         firstClick = 2;
                                         board[i][j].setBackground(colorHold);
-                                        board[i+1][j-1].setBackground(colorHoldExtra);
+                                        if(i < 14 && j > 0){
+                                            board[i+1][j-1].setBackground(colorHoldExtra);
+                                        }
                                     }else if(firstClick == 1 && downSkip){
                                         firstClick = 2;
                                         board[i][j].setBackground(colorHoldExtra);
-                                        board[i-2][j+1].setBackground(colorHold);
+                                        if(j < 14 && i > 1){
+                                            board[i-2][j+1].setBackground(colorHold);
+                                        }
                                     }else if(firstClick == 1 && rightSkip){
                                         firstClick = 2;
                                         board[i][j].setBackground(colorHold);
-                                        board[i+1][j-2].setBackground(colorHoldExtra);
+                                        if(i < 14 && j > 1){
+                                            board[i+1][j-2].setBackground(colorHoldExtra);
+                                        }
                                     }else if(downClick || downSkip){
                                         board[i][j].setBackground(colorHold);
                                     }else if(rightClick || rightSkip){
@@ -1101,10 +1145,6 @@ public void changeTurn(){
         int count = 0;
         boolean wordFound = false;
         String word = " ";
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
         if(downClick){
             if (firstX > 0 &&boardLetterHold[firstX - 1][firstY] != null){
                 firstX -= 1;
@@ -1112,10 +1152,6 @@ public void changeTurn(){
             if (lastX < 14 &&boardLetterHold[lastX + 1][lastY] != null){
                 lastX += 1;
             }
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
             for(int i = 0; i <= (lastX - firstX); i++){
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
@@ -1155,10 +1191,6 @@ public void changeTurn(){
                     boardLetter[i][j] = boardLetterHold[i][j];
                  }
             }
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
             placedWord = "";
             if(downClick){
                 int pOneScoreTemp = 0;
@@ -1170,13 +1202,17 @@ public void changeTurn(){
                         if(tileType[firstX + i][firstY] == 1){
                             pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
                             tripX += 1;
+                            tileType[firstX + i][firstY] = 5;
                         }else if(tileType[firstX + i][firstY] == 2){
                             pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV() * 2;
+                            tileType[firstX + i][firstY] = 5;
                         }else if(tileType[firstX + i][firstY] == 3){
                             pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
                             doubX += 1;
+                            tileType[firstX + i][firstY] = 5;
                         }else if(tileType[firstX + i][firstY] == 4){
                             pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV() * 3;
+                            tileType[firstX + i][firstY] = 5;
                         }else {
                             pOneScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
                         }
@@ -1185,13 +1221,17 @@ public void changeTurn(){
                         if(tileType[firstX + i][firstY] == 1){
                             pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
                             tripX += 1;
+                            tileType[firstX + i][firstY] = 5;
                         }else if(tileType[firstX + i][firstY] == 2){
                             pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV() * 2;
+                            tileType[firstX + i][firstY] = 5;
                         }else if(tileType[firstX + i][firstY] == 3){
                             pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
                             doubX += 1;
+                            tileType[firstX + i][firstY] = 5;
                         }else if(tileType[firstX + i][firstY] == 4){
                             pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV() * 3;
+                            tileType[firstX + i][firstY] = 5;
                         }else {
                             pTwoScoreTemp += boardLetterHold[firstX + i][firstY].getPV();
                         }

@@ -589,16 +589,13 @@ public class window implements MouseListener, ActionListener{
         }
          
         if(e.getSource() == buttons[1]){
-<<<<<<< HEAD
             System.out.println(placedWord);
             if(downClick || downSkip){
                 board[lastX+1][lastY].setBackground(colorHold);
             }else if(rightClick || rightSkip){
                 board[lastX][lastY+1].setBackground(colorHold);
             }
-=======
 
->>>>>>> origin/master
             if (checkTurnOne()){
                 try {
                     checkWord();
@@ -1109,27 +1106,21 @@ public void changeTurn(){
         int count = 0;
         boolean wordFound = false;
         String word = " ";
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
-        if(downClick){
+        if(downClick || boardLetterHold[firstX - 1][firstY] != null || boardLetterHold[lastX + 1][lastY] != null){
             if (firstX > 0 &&boardLetterHold[firstX - 1][firstY] != null){
                 firstX -= 1;
             }
             if (lastX < 14 &&boardLetterHold[lastX + 1][lastY] != null){
                 lastX += 1;
             }
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
             for(int i = 0; i <= (lastX - firstX); i++){
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
                 System.out.println(placedWord);
             }
-        }else if(rightClick){
+        }else if(rightClick || boardLetterHold[firstX][firstY - 1] != null || boardLetterHold[lastX][lastY + 1] != null){
             if (firstY > 0 && boardLetterHold[firstX][firstY - 1] != null){
                 firstY -= 1;
             }
@@ -1142,7 +1133,7 @@ public void changeTurn(){
                 System.out.println(placedWord + " WORD");
             }
         }
-
+            System.out.println(placedWord + " WORDDDDDDDDDDDDDDDDDDD");
         BufferedReader rd = new BufferedReader(new FileReader("src\\words\\"+placedWord.substring(0, 1) +".txt"));
         while(word != null){
             if(word.equalsIgnoreCase(placedWord)){  
@@ -1164,10 +1155,7 @@ public void changeTurn(){
                     wordsConnected[i][j] = wordsConnectedHold[i][j];
                  }
             }
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
             placedWord = "";
             if(downClick){
                 int pOneScoreTemp = 0;

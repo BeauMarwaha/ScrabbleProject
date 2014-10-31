@@ -17,7 +17,13 @@ public class window implements MouseListener, ActionListener{
     int firstY;
     int holdX;
     int holdY;
+<<<<<<< HEAD
     int num = 0;
+=======
+    
+    boolean first = true;
+    
+>>>>>>> origin/master
     int lastX;
     int lastY;
     int firstClick = 0;
@@ -34,8 +40,7 @@ public class window implements MouseListener, ActionListener{
     JLabel[] emptyLabels = new JLabel[3];
     JPanel scoresPanel = new JPanel(new GridLayout(6,1));
     JPanel[][] board = new JPanel[15][15];
-    JButton[] buttons = new JButton[3];
-    JButton[] hand = new JButton[0];
+    JButton[] buttons = new JButton[4];
     JLabel turn = new JLabel("Whose Turn: ");
     JLabel playerOne = new JLabel("Player One Score: ");
     JLabel playerTwo = new JLabel("Player Two Score: ");
@@ -180,6 +185,8 @@ public class window implements MouseListener, ActionListener{
     boolean clickLetter = false;
     boolean turnOne = true;
     String placedWord = "";
+    
+    int skips = 0;
     
     Color colorHold;
     Color colorHoldExtra;
@@ -515,6 +522,10 @@ public class window implements MouseListener, ActionListener{
         buttons[1].setText("End Turn");
         buttonsPanel.setBackground(myColorThree);
         
+        buttons[3] = new JButton();
+        buttons[3].addMouseListener(this);
+        buttons[3].setText("Skip Turn");
+        
         turn.setPreferredSize(new Dimension(75,50));
         scoresPanel.add(turn);
         scoresPanel.add(turnNumber);
@@ -552,6 +563,43 @@ public class window implements MouseListener, ActionListener{
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if(e.getSource() == buttons[3]){
+            changeTurn();
+            skips += 1;
+            System.out.println(skips);
+            if (skips == 2){
+                if (pOneScore > pTwoScore){
+                    JOptionPane.showMessageDialog(null, "Player One Wins! \n Final Score: " + pOneScore + " to " + pTwoScore + ".");
+                    if (JOptionPane.showConfirmDialog(null, "Start A New Game?") == 0){
+                        window.dispose();
+                        window g = new window();
+                    }else{
+                        System.exit(0);
+                    }
+                }
+                
+                if (pTwoScore > pOneScore){
+                    JOptionPane.showMessageDialog(null, "Player Two Wins! \n Final Score: " + pTwoScore + " to " + pOneScore + ".");
+                    if (JOptionPane.showConfirmDialog(null, "Start A New Game?") == 0){
+                        window.dispose();
+                        window g = new window();
+                    }else{
+                        System.exit(0);
+                    }
+                }
+                
+                if (pTwoScore == pOneScore){
+                    JOptionPane.showMessageDialog(null, "It's A Tie! \n Final Score: " + pTwoScore + " to " + pOneScore + ".");
+                    if (JOptionPane.showConfirmDialog(null, "Start A New Game?") == 0){
+                        window.dispose();
+                        window g = new window();
+                    }else{
+                        System.exit(0);
+                    }
+                }
+            }
+        }
+        
         if(e.getSource() == buttons[0] && buttons[0].isEnabled()){
             
             JOptionPane.showMessageDialog(centerPanel, "Click on all of the tiles you would like to exchange");
@@ -565,7 +613,7 @@ public class window implements MouseListener, ActionListener{
         }
         for(int i = 0; i < playerOneHand.size(); i++){
             if(e.getSource() == playerOneHand.get(i).getButton() ){
-                if(playerOneHand.get(i).getLetter().equals("*blank*")){
+                if(playerOneHand.get(i).getLetter().equals("*blank*") && buttons[0].isEnabled()){
                     boolean works = false;
                     String x = null;
                     while(!works){
@@ -596,7 +644,7 @@ public class window implements MouseListener, ActionListener{
         }
         for(int i = 0; i < playerTwoHand.size(); i++){
             if(e.getSource() == playerTwoHand.get(i).getButton() ){
-                if(playerTwoHand.get(i).getLetter().equals("*blank*")){
+                if(playerTwoHand.get(i).getLetter().equals("*blank*") && buttons[0].isEnabled()){
                     boolean works = false;
                     String x = null;
                     while(!works){
@@ -627,8 +675,11 @@ public class window implements MouseListener, ActionListener{
          
         if(e.getSource() == buttons[1]){
             System.out.println(placedWord);
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/master
             if (checkTurnOne()){
                 try {
                     checkWord();
@@ -1085,28 +1136,34 @@ public void changeTurn(){
         if(turnValue == 2){
             southPanel.removeAll();
             
-            for(int i = playerTwoHand.size() - 1; i >= 0; i--){
-                if(!playerTwoHand.get(i).getButton().isEnabled()){
-                    playerTwoHand.get(i).getButton().setEnabled(true);
-                    theBag.getBag().push(playerTwoHand.get(i));
-                    playerTwoHand.remove(i);
-                    
+            if(!theBag.getBag().isEmpty()){
+                for(int i = playerTwoHand.size() - 1; i >= 0; i--){
+                    if(!playerTwoHand.get(i).getButton().isEnabled()){
+                        playerTwoHand.get(i).getButton().setEnabled(true);
+                        theBag.getBag().push(playerTwoHand.get(i));
+                        playerTwoHand.remove(i);
+
+                    }
                 }
             }
+            
             theBag.shuffleBag();
             southPanel.removeAll();
             for(int i = 0; i < playerTwoHand.size(); i++){
                 playerTwoHand.get(i).getButton().removeMouseListener(this);
             }
             for(int i = 0; i < 7; i++){
-                playerTwoHand.add(theBag.getBag().pop());
-//                southPanel.add(playerTwoHand.get(i).getButton());
-//                playerTwoHand.get(i).getButton().addMouseListener(this);
-                southPanel.updateUI();
+                if(!theBag.getBag().isEmpty()){
+                    playerTwoHand.add(theBag.getBag().pop());
+    //                southPanel.add(playerTwoHand.get(i).getButton());
+    //                playerTwoHand.get(i).getButton().addMouseListener(this);
+                    southPanel.updateUI();
+                }
+                
             }
             buttons[0].setEnabled(true);
             
-            for(int i = 0; i < 7; i++){
+            for(int i = 0; i < playerOneHand.size()-1; i++){
                 southPanel.add(playerOneHand.get(i).getButton());
                 playerOneHand.get(i).getButton().addMouseListener(this);
                 southPanel.updateUI();
@@ -1120,27 +1177,33 @@ public void changeTurn(){
         }else{
             southPanel.removeAll();
             
-            for(int i = playerOneHand.size() - 1; i >= 0; i--){
-                if(!playerOneHand.get(i).getButton().isEnabled()){
-                    playerOneHand.get(i).getButton().setEnabled(true);
-                    theBag.getBag().push(playerOneHand.get(i));
-                    playerOneHand.remove(i);
-                    
+            if(!theBag.getBag().isEmpty()){
+                for(int i = playerOneHand.size() - 1; i >= 0; i--){
+                    if(!playerOneHand.get(i).getButton().isEnabled()){
+                        playerOneHand.get(i).getButton().setEnabled(true);
+                        theBag.getBag().push(playerOneHand.get(i));
+                        playerOneHand.remove(i);
+
+                    }
                 }
             }
+            
             theBag.shuffleBag();
             southPanel.removeAll();
             for(int i = 0; i < playerOneHand.size(); i++){
                 playerOneHand.get(i).getButton().removeMouseListener(this);
             }
             for(int i = 0; i < 7; i++){
-                playerOneHand.add(theBag.getBag().pop());
-//                southPanel.add(playerOneHand.get(i).getButton());
-//                playerOneHand.get(i).getButton().addMouseListener(this);
-                southPanel.updateUI();
+                if(!theBag.getBag().isEmpty()){
+                    playerOneHand.add(theBag.getBag().pop());
+//                  southPanel.add(playerOneHand.get(i).getButton());
+//                  playerOneHand.get(i).getButton().addMouseListener(this);
+                    southPanel.updateUI();
+                }
+                
             }
             buttons[0].setEnabled(true);
-            for(int i = 0; i < 7; i++){
+            for(int i = 0; i < playerTwoHand.size()-1; i++){
                 southPanel.add(playerTwoHand.get(i).getButton());
                 playerTwoHand.get(i).getButton().addMouseListener(this);
                 southPanel.updateUI();
@@ -1152,16 +1215,21 @@ public void changeTurn(){
             
         }
         System.out.println("");
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < playerOneHand.size()-1; i++){
             System.out.print(playerOneHand.get(i).getLetter());
         }
            
         System.out.println("");
         
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < playerTwoHand.size()-1; i++){
             System.out.print(playerTwoHand.get(i).getLetter());
         }
         hold.clear();
+        if(theBag.getBag().isEmpty() && first){
+            buttonsPanel.remove(3);
+            buttonsPanel.add(buttons[3]);
+            first = false;
+        }
     }
     
     public void checkWord()throws IOException, FileNotFoundException {
@@ -1169,17 +1237,24 @@ public void changeTurn(){
         boolean wordFound = false;
         int holdNum = 0;
         String word = " ";
+<<<<<<< HEAD
 
 
         if(downClick || boardLetterHold[firstX - 1][firstY] != null || boardLetterHold[lastX + 1][lastY] != null){
 
+=======
+        if(downClick || boardLetterHold[firstX - 1][firstY] != null || boardLetterHold[lastX + 1][lastY] != null){
+>>>>>>> origin/master
             if (firstX > 0 &&boardLetterHold[firstX - 1][firstY] != null){
                 firstX -= 1;
             }
             if (lastX < 14 &&boardLetterHold[lastX + 1][lastY] != null){
                 lastX += 1;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
             for(int i = 0; i <= (lastX - firstX); i++){
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
@@ -1212,9 +1287,14 @@ public void changeTurn(){
             //System.out.println(word);   
             
         }
+<<<<<<< HEAD
         
         if(wordFound && wordNum()){
             
+=======
+        if(wordFound){
+            skips = 0;
+>>>>>>> origin/master
             System.out.println("Found");
             for(int i = 0; i < 15; i++){
                 for(int j = 0; j < 15; j++){
@@ -1223,7 +1303,10 @@ public void changeTurn(){
                     
                  }
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
             placedWord = "";
             if(downClick){
                 int pOneScoreTemp = 0;
@@ -1400,7 +1483,7 @@ public void changeTurn(){
                  }
             }
             southPanel.updateUI();
-            
+            buttons[0].setEnabled(true);
         }
         
     }

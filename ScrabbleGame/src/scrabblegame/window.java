@@ -17,7 +17,7 @@ public class window implements MouseListener, ActionListener{
     int firstY;
     int holdX;
     int holdY;
-    
+    int num = 0;
     int lastX;
     int lastY;
     int firstClick = 0;
@@ -627,15 +627,8 @@ public class window implements MouseListener, ActionListener{
          
         if(e.getSource() == buttons[1]){
             System.out.println(placedWord);
-<<<<<<< HEAD
-            if(downClick || downSkip){
-                board[lastX+1][lastY].setBackground(colorHold);
-            }else if(rightClick || rightSkip){
-                board[lastX][lastY+1].setBackground(colorHold);
-            }
 
-=======
->>>>>>> origin/master
+
             if (checkTurnOne()){
                 try {
                     checkWord();
@@ -645,6 +638,7 @@ public class window implements MouseListener, ActionListener{
             }
             System.out.println(placedWord);
             if(lastX < 14 && (downClick || downSkip)){
+                
                 board[lastX+1][lastY].setBackground(colorHold);
             }else if(lastY < 14 && (rightClick || rightSkip)){
                 board[lastX][lastY+1].setBackground(colorHold);
@@ -842,14 +836,20 @@ public class window implements MouseListener, ActionListener{
                                             board[i][j+1].setBackground(Color.YELLOW);
                                         }
                                     worked = false;
-                                }else if(i < 13 && downSkip && worked && boardLetter[i+1][j] != null){
+                                }else if(i < 13 && downSkip && worked && boardLetter[i+1][j] == null){
+                                    System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGG");
                                     colorHold = board[i+1][j].getBackground();
                                     board[i+1][j].setBackground(Color.YELLOW);
                                     worked = false;
-                                }else if(i < 13 && rightSkip&& worked && boardLetter[i][j+1] != null){
+                                    downSkip = false;
+                                    downClick = true;
+                                }else if(j < 13 && rightSkip && worked && boardLetter[i][j+1] == null){
+                                    System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
                                     colorHold = board[i][j+1].getBackground();
                                     board[i][j+1].setBackground(Color.YELLOW);
                                     worked = false;
+                                    rightSkip = false;
+                                    rightClick = true;
                                 }
                             }
                             }
@@ -1028,14 +1028,20 @@ public class window implements MouseListener, ActionListener{
                                             board[i][j+1].setBackground(Color.YELLOW);
                                         }
                                     worked = false;
-                                }else if(i < 13 && downSkip && worked && boardLetter[i+1][j] != null){
+                                }else if(i < 13 && downSkip && worked && boardLetter[i+1][j] == null){
+                                    System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGG");
                                     colorHold = board[i+1][j].getBackground();
                                     board[i+1][j].setBackground(Color.YELLOW);
                                     worked = false;
-                                }else if(i < 13 && rightSkip&& worked && boardLetter[i][j+1] != null){
+                                    downSkip = false;
+                                    downClick = true;
+                                }else if(j < 13 && rightSkip && worked && boardLetter[i][j+1] == null){
+                                    System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
                                     colorHold = board[i][j+1].getBackground();
                                     board[i][j+1].setBackground(Color.YELLOW);
                                     worked = false;
+                                    rightSkip = false;
+                                    rightClick = true;
                                 }
                             }
                             }
@@ -1161,23 +1167,19 @@ public void changeTurn(){
     public void checkWord()throws IOException, FileNotFoundException {
         int count = 0;
         boolean wordFound = false;
+        int holdNum = 0;
         String word = " ";
-<<<<<<< HEAD
+
 
         if(downClick || boardLetterHold[firstX - 1][firstY] != null || boardLetterHold[lastX + 1][lastY] != null){
-=======
-        if(downClick){
->>>>>>> origin/master
+
             if (firstX > 0 &&boardLetterHold[firstX - 1][firstY] != null){
                 firstX -= 1;
             }
             if (lastX < 14 &&boardLetterHold[lastX + 1][lastY] != null){
                 lastX += 1;
             }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
             for(int i = 0; i <= (lastX - firstX); i++){
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
@@ -1210,18 +1212,18 @@ public void changeTurn(){
             //System.out.println(word);   
             
         }
-        if(wordFound){
+        
+        if(wordFound && wordNum()){
+            
             System.out.println("Found");
             for(int i = 0; i < 15; i++){
                 for(int j = 0; j < 15; j++){
                     boardLetter[i][j] = boardLetterHold[i][j];
                     wordsConnected[i][j] = wordsConnectedHold[i][j];
+                    
                  }
             }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
             placedWord = "";
             if(downClick){
                 int pOneScoreTemp = 0;
@@ -1393,7 +1395,7 @@ public void changeTurn(){
                             board[i][j].remove(0);
                         }
                     }
-                    wordsConnected[i][j] = wordsConnectedHold[i][j];
+                    wordsConnectedHold[i][j] = wordsConnected[i][j];
                     board[i][j].updateUI();
                  }
             }
@@ -1440,33 +1442,101 @@ public void changeTurn(){
             return true;
         }
     }
+    public boolean wordNum(){
+        int numHold;
+        int count = 0;
+        if (firstTurn){
+            num = placedWord.length();
+            return true;
+        }else{
+            numHold = num;
+            for(int i = 0; i < 15; i++){
+                for(int j = 0; j < 15; j++){
+                    if(wordsConnectedHold[i][j] == 3){
+                        count++;
+                    }
+                }
+            }
+            num = count;
+            if(numHold + placedWord.length() > num){
+                num = numHold;
+                return false;
+             }else{
+                return true;
+            }
+            
+        }
+    }
     public void wordConnect(){
         int holdNum = 0;
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
                 if(boardLetterHold[i][j] != null){
-                    wordsConnectedHold[i][j] = 4;
+                    wordsConnectedHold[i][j] = 3;
                 }else{
 
                     if( j<14 &&boardLetterHold[i][j+1] != null){
-                        holdNum+=1;
+                        for(int k = i; k<15; k++){
+                            if(wordsConnectedHold[i][k] == 0){
+                                wordsConnectedHold[i][k] = 1;
+                            }
+                        }
+                        //holdNum+=1;
                         //wordsConnectedHold[i][j+1] += 1;
                     }
                     if(j>0 && boardLetterHold[i][j-1] != null){
-                        holdNum+=1;
+                        for(int k = 0; k<i; k++){
+                            if(wordsConnectedHold[i][k] == 0){
+                                wordsConnectedHold[i][k] = 1;
+                            }
+                        }
+                        //holdNum+=1;
                         //wordsConnectedHold[i][j-1] += 1;
                     }
                     if(i<14 && boardLetterHold[i+1][j] != null){
-                        holdNum+=1;
+                        for(int k = j; k<15; k++){
+                            if(wordsConnectedHold[k][j] == 0){
+                                wordsConnectedHold[k][j] = 1;
+                            }
+                        }
+                        //holdNum+=1;
                         //wordsConnectedHold[i+1][j] += 1;
                     }
                     if(i>0 && boardLetterHold[i-1][j] != null){
-                        holdNum+=1;
+                        for(int k = 0; k<j; k++){
+                            if(wordsConnectedHold[k][j] == 0){
+                                wordsConnectedHold[k][j] = 1;
+                            }
+                        }
+                        //holdNum+=1;
                        // wordsConnectedHold[i-1][j] += 1;
                     }
-                    wordsConnectedHold[i][j] = holdNum;
-                    holdNum = 0;
+                    //wordsConnectedHold[i][j] = holdNum;
+                    //holdNum = 0;
                 }
+            }
+        }
+        for(int i = 0; i < 15; i++){
+            for(int j = 0; j < 15; j++){   
+                    if(wordsConnectedHold[i][j] == 1){
+                        if( j<14 && wordsConnectedHold[i][j+1] == 3){
+                            holdNum++;
+                        }
+                        if(j>0 && wordsConnectedHold[i][j-1] == 3){
+                            holdNum++;
+                        }
+                        if(i<14 && wordsConnectedHold[i+1][j] == 3){
+                            holdNum++;
+                        }
+                        if(i>0 && wordsConnectedHold[i-1][j] == 3){
+                            holdNum++;
+                        }
+                        if(holdNum > 1){
+                            wordsConnectedHold[i][j] = 2;
+                        }
+                        holdNum = 0;
+                    }
+
             }
         }
         for(int i = 0; i < 15; i++){

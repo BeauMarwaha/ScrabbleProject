@@ -17,13 +17,10 @@ public class window implements MouseListener, ActionListener{
     int firstY;
     int holdX;
     int holdY;
-<<<<<<< HEAD
     int num = 0;
-=======
     
     boolean first = true;
     
->>>>>>> origin/master
     int lastX;
     int lastY;
     int firstClick = 0;
@@ -675,11 +672,6 @@ public class window implements MouseListener, ActionListener{
          
         if(e.getSource() == buttons[1]){
             System.out.println(placedWord);
-<<<<<<< HEAD
-
-
-=======
->>>>>>> origin/master
             if (checkTurnOne()){
                 try {
                     checkWord();
@@ -1237,24 +1229,16 @@ public void changeTurn(){
         boolean wordFound = false;
         int holdNum = 0;
         String word = " ";
-<<<<<<< HEAD
-
 
         if(downClick || boardLetterHold[firstX - 1][firstY] != null || boardLetterHold[lastX + 1][lastY] != null){
 
-=======
-        if(downClick || boardLetterHold[firstX - 1][firstY] != null || boardLetterHold[lastX + 1][lastY] != null){
->>>>>>> origin/master
             if (firstX > 0 &&boardLetterHold[firstX - 1][firstY] != null){
                 firstX -= 1;
             }
             if (lastX < 14 &&boardLetterHold[lastX + 1][lastY] != null){
                 lastX += 1;
             }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
             for(int i = 0; i <= (lastX - firstX); i++){
                 placedWord += boardLetterHold[firstX + i][firstY].getLetter();
                 System.out.println("WORD");
@@ -1287,14 +1271,9 @@ public void changeTurn(){
             //System.out.println(word);   
             
         }
-<<<<<<< HEAD
-        
+
         if(wordFound && wordNum()){
-            
-=======
-        if(wordFound){
             skips = 0;
->>>>>>> origin/master
             System.out.println("Found");
             for(int i = 0; i < 15; i++){
                 for(int j = 0; j < 15; j++){
@@ -1303,10 +1282,7 @@ public void changeTurn(){
                     
                  }
             }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
             placedWord = "";
             if(downClick){
                 int pOneScoreTemp = 0;
